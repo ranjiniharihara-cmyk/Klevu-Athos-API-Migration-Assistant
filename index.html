@@ -607,9 +607,10 @@ https://{siteId}.a.Athos.io/api/track/track.json
 
             // **1. Section Link (Appears once at bottom)**
             let docsLinkHTML = '';
-            if (isAthos && platformData.docsUrl) {
+            const mainDocsUrl = 'https://docs.searchspring.com/reference/getting-started-welcome';
+            if (isAthos) {
                 docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
-                                <a href="${platformData.docsUrl}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
+                                <a href="${mainDocsUrl}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
                                     🚀 View Official Athos Docs
                                 </a>
                             </div>`;
