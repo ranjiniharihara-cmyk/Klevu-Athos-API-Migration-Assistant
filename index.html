@@ -571,37 +571,57 @@ https://{siteId}.a.Athos.io/api/track/track.json
         const navItems = document.querySelectorAll('.nav-item');
 
         // --- UPDATED RENDER FUNCTION TO INCLUDE DOCS LINK ---
-        function render() {
-            const sectionData = data[currentSection];
-            const platformData = isAthos ? sectionData.ss : sectionData.klevu;
-            const platformName = isAthos ? 'Athos' : 'Klevu';
-            const badgeClass = isAthos ? 'ss' : 'klevu';
+        // --- UPDATED RENDER FUNCTION ---
+    function render() {
+        const sectionData = data[currentSection];
+        const platformData = isAthos ? sectionData.ss : sectionData.klevu;
+        const platformName = isAthos ? 'Athos' : 'Klevu';
+        const badgeClass = isAthos ? 'ss' : 'klevu';
 
-            // **NEW:** Check for Docs URL and create the link element
-            let docsLinkHTML = '';
-            if (isAthos && platformData.docsUrl) {
-  docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
+        // **NEW:** Check for Docs URL and create the link element for the entire section
+        let docsLinkHTML = '';
+        if (isAthos && platformData.docsUrl) {
+            docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
                                 <a href="${platformData.docsUrl}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
                                     🚀 View Official Athos Docs
                                 </a>
                             </div>`;
+        }
+
+        // Update Labels
+        labelSS.classList.toggle('active', isAthos);
+        labelKlevu.classList.toggle('active', !isAthos);
+        contentArea.classList.toggle('klevu-theme', !isAthos);
+
+
+        // Generate HTML
+        let contentHTML;
+        if (currentSection === 'autocomplete') {
+            
+            let zeroTermHeading = '<h3>Zero-Term: Trending Searches (Queries)</h3>';
+            
+            // Only add the link icon to the Zero-Term Trending Searches heading in Athos mode
+            if (isAthos) {
+                const trendingUrl = docs_links.TRENDING_QUERIES;
+                const linkIcon = `<a href="${trendingUrl}" target="_blank" style="color: var(--ss-color); font-size: 1em; text-decoration: none; margin-left: 10px;">🔗</a>`;
+                zeroTermHeading = `<h3>Zero-Term: Trending Searches (Queries)${linkIcon}</h3>`;
             }
 
-
-            // Update Labels
-            labelSS.classList.toggle('active', isAthos);
-            labelKlevu.classList.toggle('active', !isAthos);
-            contentArea.classList.toggle('klevu-theme', !isAthos);
-
-
-            // Generate HTML
-            let contentHTML;
-            if (currentSection === 'autocomplete') {
-                // For Autocomplete, inject the code structure with sub-sections and append the docs link at the end.
-                contentHTML = platformData.code + docsLinkHTML;
-            } else {
-                // For all other simple sections, use the standard template.
-                contentHTML = `
+            // Replace the standard H3 with the new linked H3 inside the Athos autocomplete code
+            let modifiedCode = platformData.code;
+            if (isAthos) {
+                // This is a robust way to replace the plain H3 text with the linked H3 text
+                modifiedCode = modifiedCode.replace(
+                    '<h3>Zero-Term: Trending Searches (Queries)</h3>',
+                    zeroTermHeading
+                );
+            }
+            
+            contentHTML = modifiedCode + docsLinkHTML;
+            
+        } else {
+            // For all other simple sections, use the standard template.
+            contentHTML = `
                 <div class="description-box">
                     ${platformData.desc}
                 </div>
@@ -612,15 +632,16 @@ https://{siteId}.a.Athos.io/api/track/track.json
                 <pre><code>${platformData.code}</code></pre>
                 ${docsLinkHTML}
             `;
-            }
+        }
 
-            contentArea.innerHTML = `
+        contentArea.innerHTML = `
             <span class="badge ${badgeClass}">${platformName} Implementation</span>
             <h2>${sectionData.title}</h2>
             ${contentHTML}
         `;
-        }
+    }
 
+    // ... (rest of the script remains the same)
         // --- EVENT LISTENERS ---
         toggle.addEventListener('change', (e) => {
             isAthos = e.target.checked;
