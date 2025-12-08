@@ -1,683 +1,1313 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
+
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klevu to Athos Migration Assistant</title>
-    <style>
-        :root {
-            --klevu-color: #97C73E;
-            /* Klevu green */
-            --ss-color: #1D4990;
-            /* Athos Blue */
-            --bg-color: #f4f6f8;
-            --code-bg: #2d2d2d;
-            --text-color: #333;
-        }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
+<meta charset="UTF-8">
 
-        .container {
-            background: white;
-            width: 100%;
-            max-width: 950px;
-            /* Increased max-width for better code visibility */
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* HEADER & TOGGLE */
-        .header {
-            padding: 20px 30px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-        }
+<title>Klevu to Athos Migration Assistant</title>
 
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: bold;
-        }
+<style>
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-            flex-shrink: 0;
-        }
+:root {
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+--klevu-color: #97C73E;
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--klevu-color);
-            transition: .4s;
-            border-radius: 34px;
-        }
+/* Klevu green */
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
+--ss-color: #1D4990;
 
-        input:checked+.slider {
-            background-color: var(--ss-color);
-        }
+/* Athos Blue */
 
-        input:checked+.slider:before {
-            transform: translateX(26px);
-        }
+--bg-color: #f4f6f8;
 
-        .platform-label {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #888;
-            transition: color 0.3s;
-            white-space: nowrap;
-        }
+--code-bg: #2d2d2d;
 
-        .platform-label.active {
-            color: #000;
-            font-weight: 800;
-        }
+--text-color: #333;
 
-        /* MAIN CONTENT LAYOUT */
-        .main-body {
-            display: flex;
-            flex: 1;
-        }
+}
 
-        /* SIDEBAR NAV */
-        .sidebar {
-            width: 220px;
-            flex-shrink: 0;
-            background: #fafafa;
-            border-right: 1px solid #eee;
-            padding: 20px 0;
-            border-bottom-left-radius: 12px;
-        }
 
-        .nav-item {
-            padding: 15px 25px;
-            cursor: pointer;
-            font-size: 15px;
-            color: #666;
-            border-left: 4px solid transparent;
-            transition: all 0.2s;
-        }
 
-        .nav-item:hover {
-            background: #f0f0f0;
-        }
+body {
 
-        .nav-item.active {
-            background: #eef5ff;
-            color: var(--ss-color);
-            border-left-color: var(--ss-color);
-            font-weight: 600;
-        }
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-        /* CONTENT AREA */
-        .content {
-            flex: 1;
-            padding: 30px;
-            min-width: 0;
-        }
+background-color: var(--bg-color);
 
-        h2 {
-            margin-top: 0;
-        }
+color: var(--text-color);
 
-        .description-box {
-            background: #eef9ff;
-            border-left: 4px solid var(--ss-color);
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            font-size: 15px;
-            line-height: 1.6;
-        }
+margin: 0;
 
-        .klevu-theme .description-box {
-            background: #fff5ee;
-            border-left: 4px solid var(--klevu-color);
-        }
+padding: 40px;
 
-        .code-header {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #888;
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
+display: flex;
 
-        /* CODE BLOCK STYLING FIXES */
-        pre {
-            background: var(--code-bg);
-            color: #e0e0e0;
-            padding: 20px;
-            border-radius: 8px;
+justify-content: center;
 
-            /* WRAPPING FIXES */
-            white-space: pre-wrap;
-            white-space: -moz-pre-wrap;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
+min-height: 100vh;
 
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 25px;
-            /* Added spacing for separation */
-        }
+}
 
-        .sub-section h3 {
-            margin-top: 30px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-            color: var(--ss-color);
-        }
-        
-        /* Style for the link icon */
-        .sub-section h3 a {
-            color: var(--ss-color); 
-            font-size: 0.9em; 
-            text-decoration: none; 
-            margin-left: 10px;
-        }
 
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 15px;
-        }
 
-        .badge.klevu {
-            background: var(--klevu-color);
-        }
+.container {
 
-        .badge.ss {
-            background: var(--ss-color);
-        }
+background: white;
 
-        /* SYNTAX HIGHLIGHTING SIMULATION */
-        .key {
-            color: #ff7b72;
-        }
+width: 100%;
 
-        .str {
-            color: #a5d6ff;
-        }
+max-width: 950px;
 
-        .com {
-            color: #8b949e;
-            font-style: italic;
-        }
+/* Increased max-width for better code visibility */
 
-        .num {
-            color: #79c0ff;
-        }
+border-radius: 12px;
 
-        /* RESPONSIVE BREAKPOINT */
-        @media (max-width: 700px) {
-            .main-body {
-                flex-direction: column;
-            }
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid #eee;
-                display: flex;
-                overflow-x: auto;
-                padding: 0;
-            }
+display: flex;
 
-            .nav-item {
-                white-space: nowrap;
-                border-left: none;
-                border-bottom: 4px solid transparent;
-                padding: 15px 20px;
-            }
+flex-direction: column;
 
-            .nav-item.active {
-                border-left: none;
-                border-bottom-color: var(--ss-color);
-            }
+}
 
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
 
-            .toggle-container {
-                width: 100%;
-                justify-content: space-between;
-            }
-        }
-    </style>
+
+/* HEADER & TOGGLE */
+
+.header {
+
+padding: 20px 30px;
+
+border-bottom: 1px solid #eee;
+
+display: flex;
+
+flex-wrap: wrap;
+
+gap: 20px;
+
+justify-content: space-between;
+
+align-items: center;
+
+background: #fff;
+
+border-top-left-radius: 12px;
+
+border-top-right-radius: 12px;
+
+}
+
+
+
+.toggle-container {
+
+display: flex;
+
+align-items: center;
+
+gap: 10px;
+
+font-weight: bold;
+
+}
+
+
+
+.switch {
+
+position: relative;
+
+display: inline-block;
+
+width: 60px;
+
+height: 34px;
+
+flex-shrink: 0;
+
+}
+
+
+
+.switch input {
+
+opacity: 0;
+
+width: 0;
+
+height: 0;
+
+}
+
+
+
+.slider {
+
+position: absolute;
+
+cursor: pointer;
+
+top: 0;
+
+left: 0;
+
+right: 0;
+
+bottom: 0;
+
+background-color: var(--klevu-color);
+
+transition: .4s;
+
+border-radius: 34px;
+
+}
+
+
+
+.slider:before {
+
+position: absolute;
+
+content: "";
+
+height: 26px;
+
+width: 26px;
+
+left: 4px;
+
+bottom: 4px;
+
+background-color: white;
+
+transition: .4s;
+
+border-radius: 50%;
+
+}
+
+
+
+input:checked+.slider {
+
+background-color: var(--ss-color);
+
+}
+
+
+
+input:checked+.slider:before {
+
+transform: translateX(26px);
+
+}
+
+
+
+.platform-label {
+
+font-size: 13px;
+
+text-transform: uppercase;
+
+letter-spacing: 0.5px;
+
+color: #888;
+
+transition: color 0.3s;
+
+white-space: nowrap;
+
+}
+
+
+
+.platform-label.active {
+
+color: #000;
+
+font-weight: 800;
+
+}
+
+
+
+/* MAIN CONTENT LAYOUT */
+
+.main-body {
+
+display: flex;
+
+flex: 1;
+
+}
+
+
+
+/* SIDEBAR NAV */
+
+.sidebar {
+
+width: 220px;
+
+flex-shrink: 0;
+
+background: #fafafa;
+
+border-right: 1px solid #eee;
+
+padding: 20px 0;
+
+border-bottom-left-radius: 12px;
+
+}
+
+
+
+.nav-item {
+
+padding: 15px 25px;
+
+cursor: pointer;
+
+font-size: 15px;
+
+color: #666;
+
+border-left: 4px solid transparent;
+
+transition: all 0.2s;
+
+}
+
+
+
+.nav-item:hover {
+
+background: #f0f0f0;
+
+}
+
+
+
+.nav-item.active {
+
+background: #eef5ff;
+
+color: var(--ss-color);
+
+border-left-color: var(--ss-color);
+
+font-weight: 600;
+
+}
+
+
+
+/* CONTENT AREA */
+
+.content {
+
+flex: 1;
+
+padding: 30px;
+
+min-width: 0;
+
+}
+
+
+
+h2 {
+
+margin-top: 0;
+
+}
+
+
+
+.description-box {
+
+background: #eef9ff;
+
+border-left: 4px solid var(--ss-color);
+
+padding: 15px;
+
+margin-bottom: 20px;
+
+border-radius: 4px;
+
+font-size: 15px;
+
+line-height: 1.6;
+
+}
+
+
+
+.klevu-theme .description-box {
+
+background: #fff5ee;
+
+border-left: 4px solid var(--klevu-color);
+
+}
+
+
+
+.code-header {
+
+font-size: 12px;
+
+text-transform: uppercase;
+
+color: #888;
+
+margin-bottom: 5px;
+
+display: flex;
+
+justify-content: space-between;
+
+}
+
+
+
+/* CODE BLOCK STYLING FIXES */
+
+pre {
+
+background: var(--code-bg);
+
+color: #e0e0e0;
+
+padding: 20px;
+
+border-radius: 8px;
+
+
+
+/* WRAPPING FIXES */
+
+white-space: pre-wrap;
+
+white-space: -moz-pre-wrap;
+
+word-wrap: break-word;
+
+overflow-wrap: break-word;
+
+
+
+font-family: 'Consolas', 'Monaco', monospace;
+
+font-size: 14px;
+
+line-height: 1.5;
+
+margin-bottom: 25px;
+
+/* Added spacing for separation */
+
+}
+
+
+
+.sub-section h3 {
+
+margin-top: 30px;
+
+border-bottom: 1px solid #ddd;
+
+padding-bottom: 5px;
+
+color: var(--ss-color);
+
+}
+
+
+
+.badge {
+
+display: inline-block;
+
+padding: 4px 10px;
+
+border-radius: 4px;
+
+font-size: 11px;
+
+font-weight: bold;
+
+color: white;
+
+margin-bottom: 15px;
+
+}
+
+
+
+.badge.klevu {
+
+background: var(--klevu-color);
+
+}
+
+
+
+.badge.ss {
+
+background: var(--ss-color);
+
+}
+
+
+
+/* SYNTAX HIGHLIGHTING SIMULATION */
+
+.key {
+
+color: #ff7b72;
+
+}
+
+
+
+.str {
+
+color: #a5d6ff;
+
+}
+
+
+
+.com {
+
+color: #8b949e;
+
+font-style: italic;
+
+}
+
+
+
+.num {
+
+color: #79c0ff;
+
+}
+
+
+
+/* RESPONSIVE BREAKPOINT */
+
+@media (max-width: 700px) {
+
+.main-body {
+
+flex-direction: column;
+
+}
+
+
+
+.sidebar {
+
+width: 100%;
+
+border-right: none;
+
+border-bottom: 1px solid #eee;
+
+display: flex;
+
+overflow-x: auto;
+
+padding: 0;
+
+}
+
+
+
+.nav-item {
+
+white-space: nowrap;
+
+border-left: none;
+
+border-bottom: 4px solid transparent;
+
+padding: 15px 20px;
+
+}
+
+
+
+.nav-item.active {
+
+border-left: none;
+
+border-bottom-color: var(--ss-color);
+
+}
+
+
+
+.header {
+
+flex-direction: column;
+
+align-items: flex-start;
+
+}
+
+
+
+.toggle-container {
+
+width: 100%;
+
+justify-content: space-between;
+
+}
+
+}
+
+</style>
+
 </head>
+
+
 
 <body>
 
-    <div class="container">
-        <div class="header">
-            <h3>Klevu - Athos API Migration Assistant</h3>
-            <div class="toggle-container">
-                <span class="platform-label active" id="label-klevu">Klevu (Source)</span>
-                <label class="switch">
-                    <input type="checkbox" id="platformToggle">
-                    <span class="slider"></span>
-                </label>
-                <span class="platform-label" id="label-ss">Athos (Target)</span>
-            </div>
-        </div>
 
-        <div class="main-body">
-            <div class="sidebar">
-                <div class="nav-item active" onclick="setSection('autocomplete')">Autocomplete</div>
-                <div class="nav-item" onclick="setSection('search')">Search API</div>
-                <div class="nav-item" onclick="setSection('category')">Category Pages</div>
-                <div class="nav-item" onclick="setSection('recs')">Recommendations</div>
-                <div class="nav-item" onclick="setSection('analytics')">Analytics</div>
-            </div>
 
-            <div class="content" id="content-area">
-            </div>
-        </div>
-    </div>
+<div class="container">
 
-    <script>
-        // --- DOCUMENTATION LINKS MAPPING ---
-        // Using generic Searchspring links as placeholders for your Athos documentation
-        const docs_links = {
-            // General Endpoints
-            SEARCH_API: 'https://docs.searchspring.com/reference/get-search',
-            CATEGORY_PAGES: 'https://docs.searchspring.com/reference/category-result-pages',
-            RECOMMENDATIONS: 'https://docs.searchspring.com/reference/get-recommendations',
-            ANALYTICS_TRACKING: 'https://docs.searchspring.com/reference/post-beacon',
+<div class="header">
 
-            // Autocomplete Sub-Endpoints (Specific URLs)
-            TRENDING_QUERIES: 'https://docs.searchspring.com/reference/get-trending', // User's specific link
-            AUTOCOMPLETE_BASE: 'https://docs.searchspring.com/reference/get-autocomplete',
-            
-            // Merchandising/Recs Sub-Endpoints
-            BACKGROUND_FILTER: 'https://docs.Athos.com/reference/background-filters' // Custom placeholder link
-        };
+<h3>Klevu - Athos API Migration Assistant</h3>
 
-        // --- DATA STORE (ALL MAPPINGS) ---
-        const data = {
-            autocomplete: {
-                title: "Autocomplete & Instant Search",
-                klevu: {
-                    desc: "Klevu handles both the Zero-Term and Typed states using a single endpoint structure. All content (Trending, Products, CMS) is returned in nested arrays within a monolithic response.",
-                    code: `
-                    <div class="sub-section">
-                        <h3>Zero-Term: Trending Queries/Products</h3>
-                        <p>Klevu sources trending content from a static config file fetched on load.</p>
-                        <pre><code><span class="com">// Klevu Trending Data Source:</span>
+<div class="toggle-container">
+
+<span class="platform-label active" id="label-klevu">Klevu (Source)</span>
+
+<label class="switch">
+
+<input type="checkbox" id="platformToggle">
+
+<span class="slider"></span>
+
+</label>
+
+<span class="platform-label" id="label-ss">Athos (Target)</span>
+
+</div>
+
+</div>
+
+
+
+<div class="main-body">
+
+<div class="sidebar">
+
+<div class="nav-item active" onclick="setSection('autocomplete')">Autocomplete</div>
+
+<div class="nav-item" onclick="setSection('search')">Search API</div>
+
+<div class="nav-item" onclick="setSection('category')">Category Pages</div>
+
+<div class="nav-item" onclick="setSection('recs')">Recommendations</div>
+
+<div class="nav-item" onclick="setSection('analytics')">Analytics</div>
+
+</div>
+
+
+
+<div class="content" id="content-area">
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+// --- DOCUMENTATION LINKS MAPPING ---
+
+// Use this object to manage all external Athos documentation links.
+
+const docs_links = {
+
+// Autocomplete Links
+
+TRENDING_QUERIES: 'https://docs.searchspring.com/reference/get-trending', // From your example
+
+AUTOCOMPLETE_BASE: 'https://docs.searchspring.com/reference/get-autocomplete',
+
+
+
+// Core Search Links
+
+SEARCH_API: 'https://docs.searchspring.com/reference/get-search',
+
+
+
+// Category/Merchandising Links
+
+CATEGORY_PAGES: 'https://docs.searchspring.com/reference/category-result-pages',
+
+
+
+// Recommendations/Personalization Links
+
+RECOMMENDATIONS: 'https://docs.searchspring.com/reference/get-recommendations',
+
+
+
+// Analytics/Tracking Links
+
+ANALYTICS_TRACKING: 'https://docs.searchspring.com/reference/post-beacon'
+
+};
+
+// --- DATA STORE (ALL MAPPINGS) ---
+
+const data = {
+
+autocomplete: {
+
+title: "Autocomplete & Instant Search",
+
+klevu: {
+
+desc: "Klevu handles both the Zero-Term and Typed states using a single endpoint structure. All content (Trending, Products, CMS) is returned in nested arrays within a monolithic response.",
+
+code: `
+
+<div class="sub-section">
+
+<h3>Zero-Term: Trending Queries/Products</h3>
+
+<p>Klevu sources trending content from a static config file fetched on load.</p>
+
+<pre><code><span class="com">// Klevu Trending Data Source:</span>
+
 GET https://js.klevu.com/klevu-js-v1/klevu-js-api/{apiKey}.json</code></pre>
-                    </div>
-                    <div class="sub-section">
-                        <h3>Zero-Term: Recent Searches/Products</h3>
-                        <p>User history is stored and retrieved via the browser's <b>localStorage</b>.</p>
-                        <pre><code><span class="com">// Klevu: Uses native browser functions to read/write.</span>
+
+</div>
+
+<div class="sub-section">
+
+<h3>Zero-Term: Recent Searches/Products</h3>
+
+<p>User history is stored and retrieved via the browser's <b>localStorage</b>.</p>
+
+<pre><code><span class="com">// Klevu: Uses native browser functions to read/write.</span>
+
 localStorage.getItem('klevu_recent_searches')</code></pre>
-                    </div>
-                    <div class="sub-section">
-                        <h3>Typed Search: Products / CMS / Category</h3>
-                        <p>Sent as a single POST request with multiple objects in the <code>recordQueries</code> array.</p>
-                        <pre><code><span class="com">// Klevu: Single Monolithic POST request</span>
+
+</div>
+
+<div class="sub-section">
+
+<h3>Typed Search: Products / CMS / Category</h3>
+
+<p>Sent as a single POST request with multiple objects in the <code>recordQueries</code> array.</p>
+
+<pre><code><span class="com">// Klevu: Single Monolithic POST request</span>
+
 POST /cs/v2/search
+
 {
-  <span class="key">"recordQueries"</span>: [
-    <span class="com">// Object 1: Products</span>
-    { <span class="key">"id"</span>: <span class="str">"productSearch"</span>, ... }, 
-    <span class="com">// Object 2: CMS</span>
-    { <span class="key">"id"</span>: <span class="str">"cmsSearch"</span>, <span class="key">"typeOfRecords"</span>: <span class="str">"KLEVU_CMS"</span>, ... }, 
-    <span class="com">// Object 3: Category</span>
-    { <span class="key">"id"</span>: <span class="str">"categorySearch"</span>, <span class="key">"typeOfRecords"</span>: <span class="str">"KLEVU_CATEGORY"</span>, ... } 
-  ]
+
+<span class="key">"recordQueries"</span>: [
+
+<span class="com">// Object 1: Products</span>
+
+{ <span class="key">"id"</span>: <span class="str">"productSearch"</span>, ... },
+
+<span class="com">// Object 2: CMS/Categories (Combined)</span>
+
+{ <span class="key">"id"</span>: <span class="str">"cmsSearch"</span>, <span class="key">"typeOfRecords"</span>: <span class="str">"KLEVU_CMS"</span>, ... }
+
+{ <span class="key">"id"</span>: <span class="str">"categorySearch"</span>, <span class="key">"typeOfRecords"</span>: <span class="str">"KLEVU_CATEGORY"</span>, ... }
+
+]
+
 }</code></pre>
-                    </div>
-                `
-                },
-                ss: {
-                    desc: "Athos requires **Parallel Requests** and uses specialized endpoints. Categories and CMS pages are typically indexed in a separate 'Content' Site ID for performance and modularity.",
-                    code: `
-                    <div class="sub-section">
-                        <h3>Zero-Term: Trending Searches (Queries) </h3>
-                        <p>Uses a dedicated API for fetching aggregate popular search terms.</p>
-                        <pre><code><span class="com">// Athos Trending Queries API:</span>
+
+</div>
+
+`
+
+},
+
+ss: {
+
+desc: "Athos requires **Parallel Requests** and uses specialized endpoints. Categories and CMS pages are typically indexed in a separate 'Content' Site ID for performance and modularity.",
+
+code: `
+
+<div class="sub-section">
+
+<h3>Zero-Term: Trending Searches (Queries)</h3>
+
+<p>Uses a dedicated API for fetching aggregate popular search terms.</p>
+
+<pre><code><span class="com">// Athos Trending Queries API:</span>
+
 GET https://{siteId}.a.Athos.io/api/suggest/trending.json
+
 ?siteId=<span class="str">{Main_Site_ID}</span></code></pre>
-                    </div>
-                    <div class="sub-section">
-                        <h3>Zero-Term: Trending Products </h3>
-                        <p>This is a **Recommendation API** call using a configured Profile Tag.</p>
-                        <pre><code><span class="com">// Athos Recommendations API:</span>
+
+</div>
+
+<div class="sub-section">
+
+<h3>Zero-Term: Trending Products</h3>
+
+<p>This is a **Recommendation API** call using a configured Profile Tag.</p>
+
+<pre><code><span class="com">// Athos Recommendations API:</span>
+
 GET /boost/recommendations/recommend
+
 ?siteId=<span class="str">{Main_Site_ID}</span>
+
 &tags=<span class="str">autocomplete-trending</span></code></pre>
-                    </div>
-                    <div class="sub-section">
-                        <h3>Zero-Term: Recent Searches</h3>
-                        <p>The terms will have to be stored in a local array and retrieved on client side.</p>
-                        <pre><code><span class="com">// Athos: Implement logic to read/write search history.</span>
-localStorage.setItem('athos_recent_searches', JSON.stringify(terms))</code></pre>
-                    </div>
-                    <div class="sub-section">
-                        <h3>Typed Search: Products (Main Index) </h3>
-                        <p>Dedicated Autocomplete endpoint for fast product and term suggestions.</p>
-                        <pre><code><span class="com">// Req A: PRODUCTS (Main Site ID)</span>
+
+</div>
+
+<div class="sub-section">
+
+<h3>Zero-Term: Recent Searches</h3>
+
+<p>The terms will have to be stored in a local array and retrieved on client side.</p>
+
+<pre><code><span class="com">// Athos: Implement logic to read/write search history.</span>
+
+localStorage.setItem('athos_recent_searches', JSON.stringify(terms)) <span class="com">// Variable name corrected</span></code></pre>
+
+</div>
+
+<div class="sub-section">
+
+<h3>Typed Search: Products (Main Index)</h3>
+
+<p>Dedicated Autocomplete endpoint for fast product and term suggestions.</p>
+
+<pre><code><span class="com">// Req A: PRODUCTS (Main Site ID)</span>
+
 GET /api/search/autocomplete.json
+
 ?siteId=<span class="str">{Main_Site_ID}</span>
+
 &q=<span class="str">boots</span></code></pre>
-                    </div>
-                    <div class="sub-section">
-                        <h3>Typed Search: Categories & CMS (Content Index) </h3>
-                        <p>Parallel request to the **Content Site ID** to fetch non-product results for a tabbed view.</p>
-                        <pre><code><span class="com">// Req B: CATEGORIES & CMS (Content Site ID)</span>
+
+</div>
+
+<div class="sub-section">
+
+<h3>Typed Search: Categories & CMS (Content Index)</h3>
+
+<p>Parallel request to the **Content Site ID** to fetch non-product results for a tabbed view.</p>
+
+<pre><code><span class="com">// Req B: CATEGORIES & CMS (Content Site ID)</span>
+
 GET /api/search/autocomplete.json
+
 ?siteId=<span class="str">{Content_Site_ID}</span>
+
 &q=<span class="str">boots</span></code></pre>
-                    </div>
-                `,
-                    docsUrl: docs_links.AUTOCOMPLETE_BASE // Main link for the tab
-                }
-            },
-            search: {
-                title: "Product Search & Pagination",
-                klevu: {
-                    desc: "Klevu uses a <b>POST</b> request with a deep JSON structure. Pagination is handled via <code>offset</code> (0, 10, 20...). Filters are nested objects.",
-                    code: `<span class="com">// Klevu Endpoint: POST /cs/v2/search</span>
-{
-  <span class="key">"context"</span>: {
-    <span class="key">"apiKeys"</span>: [<span class="str">"klevu-12345"</span>]
-  },
-  <span class="key">"recordQueries"</span>: [
-    {
-      <span class="key">"id"</span>: <span class="str">"searchConfig"</span>,
-      <span class="key">"typeOfRequest"</span>: <span class="str">"SEARCH"</span>,
-      <span class="key">"settings"</span>: {
-        <span class="key">"query"</span>: { <span class="key">"term"</span>: <span class="str">"running shoes"</span> },
-        <span class="key">"limit"</span>: <span class="num">24</span>,
-        <span class="key">"offset"</span>: <span class="num">0</span> <span class="com">// 0=Page1, 24=Page2</span>
-      }
-    }
-  ]
-}`
-                },
-                ss: {
-                    desc: "Athos uses a standard <b>GET</b> request. Pagination uses <code>page</code> numbers (1, 2, 3...). Filters are flattened into query parameters using the <code>filter.field</code> syntax.",
-                    code: `<span class="com">// Athos Endpoint: GET /api/search/search.json</span>
 
-<span class="com">// Query Parameters:</span>
-?siteId=<span class="str">abc1234</span>
-&q=<span class="str">running shoes</span>
-&resultsPerPage=<span class="num">24</span>
-&page=<span class="num">1</span> <span class="com">// WARNING: Use 1 for first page, not 0!</span>
+</div>
 
-<span class="com">// Filtering examples:</span>
-&filter.color=<span class="str">Blue</span>
-&filter.price_range_custom=<span class="str">100-200</span>`
-                },
-                docsUrl: docs_links.SEARCH_API // Main link for the tab
-            },
-            category: {
-                title: "Category/Collection Pages",
-                klevu: {
-                    desc: "Klevu treats categories like search results where the query is <code>*</code> and a <code>categoryPath</code> filter is applied within the JSON payload.",
-                    code: `<span class="com">// Klevu: POST /cs/v2/search</span>
-{
-  <span class="key">"recordQueries"</span>: [
-    {
-      <span class="key">"settings"</span>: {
-        <span class="key">"query"</span>: {
-           <span class="key">"term"</span>: <span class="str">"*"</span>,
-           <span class="key">"categoryPath"</span>: <span class="str">"Men > Shoes > Running"</span>
-        },
-        <span class="key">"typeOfRequest"</span>: <span class="str">"CATNAV"</span>
-      }
-    }
-  ]
-}`
-                },
-                ss: {
-                    desc: "In Athos, this is a <b>Zero-Result Search</b>. You leave the query <code>q=</code> empty, and apply a <b>Background Filter</b>. This loads the merchandising config for that specific category.",
-                    code: `<span class="com">// Athos: GET /api/search/search.json</span>
+`,
 
-<span class="com">// Query Parameters:</span>
-?siteId=<span class="str">abc1234</span>
-&q= <span class="com">// Leave empty for category landing pages</span>
-&bgfilter.category_id=<span class="str">6789</span> <span class="com">// Use the unique Category ID</span>
+docsUrl: docs_links.TRENDING_QUERIES // Placeholder link
 
-<span class="com">// Alternately, filter by hierarchy string if indexed:</span>
-<span class="com">// &bgfilter.hierarchy="Men > Shoes > Running"</span>`
-                },
-                docsUrl: docs_links.CATEGORY_PAGES // Main link for the tab
-            },
-            recs: {
-                title: "Recommendations (Product & Cart)",
-                klevu: {
-                    desc: "Klevu defines the logic <i>inside the request</i>. You explicitly request <code>RECS_ALSO_VIEWED</code> or <code>RECS_ALSO_BOUGHT</code> in the payload.",
-                    code: `<span class="com">// Klevu: POST /cs/v2/search</span>
-{
-  <span class="key">"recordQueries"</span>: [
-    {
-       <span class="key">"typeOfRequest"</span>: <span class="str">"RECS_ALSO_VIEWED"</span>,
-       <span class="key">"context"</span>: {
-          <span class="key">"recentObjects"</span>: [
-             { <span class="key">"type"</span>: <span class="str">"product"</span>, <span class="key">"id"</span>: <span class="str">"SKU-123"</span> }
-          ]
-       }
-    }
-  ]
-}`
-                },
-                ss: {
-                    desc: "Athos decouples logic from code. You configure the logic in the Console and use a <b>Profile Tag</b> in the request. This is the Recommendations API.",
-                    code: `<span class="com">// Athos: GET /boost/recommendations/recommend</span>
-
-<span class="com">// 1. PDP Recommendations:</span>
-?siteId=<span class="str">abc1234</span>
-&tags=<span class="str">pdp-also-viewed</span> <span class="com">// Profile Tag from Console</span>
-&product=<span class="str">SKU-123</span> <span class="com">// Context of current product</span>
-
-<span class="com">// 2. Cart Recommendations:</span>
-?siteId=<span class="str">abc1234</span>
-&tags=<span class="str">cart-cross-sell</span>
-&cart=<span class="str">SKU-123,SKU-456</span> <span class="com">// Comma-separated items in cart</span>`
-                },
-                docsUrl: docs_links.RECOMMENDATIONS // Main link for the tab
-            },
-            analytics: {
-                title: "Analytics & IntelliSuggest Tracking",
-                klevu: {
-                    desc: "Klevu tracks events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>, passing the event type and product ID.",
-                    code: `<span class="com">// Klevu Click Tracking URL</span>
-https://stats.ksearchnet.com/analytics/collect
-?klevu_apiKey=<span class="str">klevu-123</span>
-&klevu_type=<span class="str">clicked</span>
-&klevu_productId=<span class="str">SKU-123</span>`
-                },
-                ss: {
-                    desc: "Athos requires <b>Data (d)</b> and <b>Signature (s)</b> validation. These strings must be captured from the original Search Response and passed back to track the event correctly.",
-                    code: `<span class="com">// 1. Search Response (Capture data):</span>
-{
-   "results": [
-      {
-         "id": "SKU-123",
-         "intelliSuggestData": "eJxyz...", <span class="com">// Capture 'd'</span>
-         "intelliSuggestSignature": "58a2b..." <span class="com">// Capture 's'</span>
-      }
-   ]
 }
 
-<span class="com">// 2. Tracking Request (Outgoing Beacon):</span>
-https://{siteId}.a.Athos.io/api/track/track.json
+},
+
+search: {
+
+title: "Product Search & Pagination",
+
+klevu: {
+
+desc: "Klevu uses a <b>POST</b> request with a deep JSON structure. Pagination is handled via <code>offset</code> (0, 10, 20...). Filters are nested objects.",
+
+code: `<span class="com">// Klevu Endpoint: POST /cs/v2/search</span>
+
+{
+
+<span class="key">"context"</span>: {
+
+<span class="key">"apiKeys"</span>: [<span class="str">"klevu-12345"</span>]
+
+},
+
+<span class="key">"recordQueries"</span>: [
+
+{
+
+<span class="key">"id"</span>: <span class="str">"searchConfig"</span>,
+
+<span class="key">"typeOfRequest"</span>: <span class="str">"SEARCH"</span>,
+
+<span class="key">"settings"</span>: {
+
+<span class="key">"query"</span>: { <span class="key">"term"</span>: <span class="str">"running shoes"</span> },
+
+<span class="key">"limit"</span>: <span class="num">24</span>,
+
+<span class="key">"offset"</span>: <span class="num">0</span> <span class="com">// 0=Page1, 24=Page2</span>
+
+}
+
+}
+
+]
+
+}`
+
+},
+
+ss: {
+
+desc: "Athos uses a standard <b>GET</b> request. Pagination uses <code>page</code> numbers (1, 2, 3...). Filters are flattened into query parameters using the <code>filter.field</code> syntax.",
+
+code: `<span class="com">// Athos Endpoint: GET /api/search/search.json</span>
+
+
+
+<span class="com">// Query Parameters:</span>
+
 ?siteId=<span class="str">abc1234</span>
+
+&q=<span class="str">running shoes</span>
+
+&resultsPerPage=<span class="num">24</span>
+
+&page=<span class="num">1</span> <span class="com">// WARNING: Use 1 for first page, not 0!</span>
+
+
+
+<span class="com">// Filtering examples:</span>
+
+&filter.color=<span class="str">Blue</span>
+
+&filter.price_range_custom=<span class="str">100-200</span>`
+
+},
+
+docsUrl: 'https://docs.Athos.com/reference/get-search' // Placeholder link
+
+},
+
+category: {
+
+title: "Category/Collection Pages",
+
+klevu: {
+
+desc: "Klevu treats categories like search results where the query is <code>*</code> and a <code>categoryPath</code> filter is applied within the JSON payload.",
+
+code: `<span class="com">// Klevu: POST /cs/v2/search</span>
+
+{
+
+<span class="key">"recordQueries"</span>: [
+
+{
+
+<span class="key">"settings"</span>: {
+
+<span class="key">"query"</span>: {
+
+<span class="key">"term"</span>: <span class="str">"*"</span>,
+
+<span class="key">"categoryPath"</span>: <span class="str">"Men > Shoes > Running"</span>
+
+},
+
+<span class="key">"typeOfRequest"</span>: <span class="str">"CATNAV"</span>
+
+}
+
+}
+
+]
+
+}`
+
+},
+
+ss: {
+
+desc: "In Athos, this is a <b>Zero-Result Search</b>. You leave the query <code>q=</code> empty, and apply a <b>Background Filter</b>. This loads the merchandising config for that specific category.",
+
+code: `<span class="com">// Athos: GET /api/search/search.json</span>
+
+
+
+<span class="com">// Query Parameters:</span>
+
+?siteId=<span class="str">abc1234</span>
+
+&q= <span class="com">// Leave empty for category landing pages</span>
+
+&bgfilter.category_id=<span class="str">6789</span> <span class="com">// Use the unique Category ID</span>
+
+
+
+<span class="com">// Alternately, filter by hierarchy string if indexed:</span>
+
+<span class="com">// &bgfilter.hierarchy="Men > Shoes > Running"</span>`
+
+},
+
+docsUrl: 'https://docs.Athos.com/reference/category-page-merchandising' // Placeholder link
+
+},
+
+recs: {
+
+title: "Recommendations (Product & Cart)",
+
+klevu: {
+
+desc: "Klevu defines the logic <i>inside the request</i>. You explicitly request <code>RECS_ALSO_VIEWED</code> or <code>RECS_ALSO_BOUGHT</code> in the payload.",
+
+code: `<span class="com">// Klevu: POST /cs/v2/search</span>
+
+{
+
+<span class="key">"recordQueries"</span>: [
+
+{
+
+<span class="key">"typeOfRequest"</span>: <span class="str">"RECS_ALSO_VIEWED"</span>,
+
+<span class="key">"context"</span>: {
+
+<span class="key">"recentObjects"</span>: [
+
+{ <span class="key">"type"</span>: <span class="str">"product"</span>, <span class="key">"id"</span>: <span class="str">"SKU-123"</span> }
+
+]
+
+}
+
+}
+
+]
+
+}`
+
+},
+
+ss: {
+
+desc: "Athos decouples logic from code. You configure the logic in the Console and use a <b>Profile Tag</b> in the request. This is the Recommendations API.",
+
+code: `<span class="com">// Athos: GET /boost/recommendations/recommend</span>
+
+
+
+<span class="com">// 1. PDP Recommendations:</span>
+
+?siteId=<span class="str">abc1234</span>
+
+&tags=<span class="str">pdp-also-viewed</span> <span class="com">// Profile Tag from Console</span>
+
+&product=<span class="str">SKU-123</span> <span class="com">// Context of current product</span>
+
+
+
+<span class="com">// 2. Cart Recommendations:</span>
+
+?siteId=<span class="str">abc1234</span>
+
+&tags=<span class="str">cart-cross-sell</span>
+
+&cart=<span class="str">SKU-123,SKU-456</span> <span class="com">// Comma-separated items in cart</span>`
+
+},
+
+docsUrl: 'https://docs.Athos.com/reference/get-recommendations' // Placeholder link
+
+},
+
+analytics: {
+
+title: "Analytics & IntelliSuggest Tracking",
+
+klevu: {
+
+desc: "Klevu tracks events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>, passing the event type and product ID.",
+
+code: `<span class="com">// Klevu Click Tracking URL</span>
+
+https://stats.ksearchnet.com/analytics/collect
+
+?klevu_apiKey=<span class="str">klevu-123</span>
+
+&klevu_type=<span class="str">clicked</span>
+
+&klevu_productId=<span class="str">SKU-123</span>`
+
+},
+
+ss: {
+
+desc: "Athos requires <b>Data (d)</b> and <b>Signature (s)</b> validation. These strings must be captured from the original Search Response and passed back to track the event correctly.",
+
+code: `<span class="com">// 1. Search Response (Capture data):</span>
+
+{
+
+"results": [
+
+{
+
+"id": "SKU-123",
+
+"intelliSuggestData": "eJxyz...", <span class="com">// Capture 'd'</span>
+
+"intelliSuggestSignature": "58a2b..." <span class="com">// Capture 's'</span>
+
+}
+
+]
+
+}
+
+
+
+<span class="com">// 2. Tracking Request (Outgoing Beacon):</span>
+
+https://{siteId}.a.Athos.io/api/track/track.json
+
+?siteId=<span class="str">abc1234</span>
+
 &d=<span class="str">eJxyz...</span> <span class="com">// REQUIRED</span>
+
 &s=<span class="str">58a2b...</span> <span class="com">// REQUIRED</span>`
-                },
-                docsUrl: docs_links.ANALYTICS_TRACKING // Main link for the tab
-            }
-        };
 
-        // --- STATE MANAGEMENT & RENDERING LOGIC ---
-        let currentSection = 'autocomplete'; // Initial load is now Autocomplete
-        let isAthos = false;
+},
 
-        const toggle = document.getElementById('platformToggle');
-        const contentArea = document.getElementById('content-area');
-        const labelKlevu = document.getElementById('label-klevu');
-        const labelSS = document.getElementById('label-ss');
-        const navItems = document.querySelectorAll('.nav-item');
+docsUrl: 'https://docs.Athos.com/reference/analytics-tracking' // Placeholder link
 
-        // --- UPDATED RENDER FUNCTION TO INCLUDE DOCS LINK ---
-        function render() {
-            const sectionData = data[currentSection];
-            const platformData = isAthos ? sectionData.ss : sectionData.klevu;
-            const platformName = isAthos ? 'Athos' : 'Klevu';
-            const badgeClass = isAthos ? 'ss' : 'klevu';
+}
 
-            // **1. Section Link (Appears once at bottom)**
-            let docsLinkHTML = '';
-            if (isAthos && platformData.docsUrl) {
-                docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
-                                <a href="${platformData.docsUrl}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
-                                    🚀 View Official Athos Docs
-                                </a>
-                            </div>`;
-            }
-            
-            // **2. Sub-Block Link Insertion Logic (For Athos only)**
-            let finalCode = platformData.code;
-            
-            // Only modify Athos code blocks with the link icon
-            if (isAthos) {
-                // Regex to find the unique placeholder: const linkRegex = //g;
-                
-                finalCode = finalCode.replace(linkRegex, (match, key) => {
-                    const url = docs_links[key]; // Use the key to lookup the URL
-                    if (url) {
-                        // Insert the link icon right after the <h3> closing tag
-                        const linkIcon = `<a href="${url}" target="_blank" style="color: var(--ss-color); font-size: 0.9em; text-decoration: none; margin-left: 10px;">🔗</a>`;
-                        return linkIcon; // The regex replaces the placeholder comment with the link icon
-                    }
-                    return ''; // Remove comment if link key is missing
-                });
-            }
+};
 
 
-            // Update Labels
-            labelSS.classList.toggle('active', isAthos);
-            labelKlevu.classList.toggle('active', !isAthos);
-            contentArea.classList.toggle('klevu-theme', !isAthos);
+
+// --- STATE MANAGEMENT & RENDERING LOGIC ---
+
+let currentSection = 'autocomplete'; // Initial load is now Autocomplete
+
+let isAthos = false;
 
 
-            // Generate HTML
-            let contentHTML;
-            if (currentSection === 'autocomplete') {
-                contentHTML = finalCode + docsLinkHTML;
-            } else {
-                // For all other simple sections, use the standard template.
-                contentHTML = `
-                <div class="description-box">
-                    ${platformData.desc}
-                </div>
-                <div class="code-header">
-                    <span>Request Format</span>
-                    <span>${isAthos ? 'REST API (GET)' : 'REST API (POST)'}</span>
-                </div>
-                <pre><code>${finalCode}</code></pre>
-                ${docsLinkHTML}
-            `;
-            }
 
-            contentArea.innerHTML = `
-            <span class="badge ${badgeClass}">${platformName} Implementation</span>
-            <h2>${sectionData.title}</h2>
-            ${contentHTML}
-        `;
-        }
+const toggle = document.getElementById('platformToggle');
 
-        // --- EVENT LISTENERS ---
-        toggle.addEventListener('change', (e) => {
-            isAthos = e.target.checked;
-            render();
-        });
+const contentArea = document.getElementById('content-area');
 
-        function setSection(section) {
-            currentSection = section;
+const labelKlevu = document.getElementById('label-klevu');
 
-            // Update Nav UI
-            navItems.forEach((el) => {
-                el.classList.remove('active');
-                if (el.getAttribute('onclick').includes(section)) {
-                    el.classList.add('active');
-                }
-            });
+const labelSS = document.getElementById('label-ss');
 
-            render();
-        }
+const navItems = document.querySelectorAll('.nav-item');
 
-        // Initial Render
-        navItems.forEach(el => { // Find the initial active item and set currentSection
-            if (el.getAttribute('onclick').includes('autocomplete')) {
-                el.classList.add('active');
-                currentSection = 'autocomplete';
-            } else {
-                el.classList.remove('active');
-            }
-        });
-        render();
 
-    </script>
+
+// --- UPDATED RENDER FUNCTION TO INCLUDE DOCS LINK ---
+
+function render() {
+
+const sectionData = data[currentSection];
+
+const platformData = isAthos ? sectionData.ss : sectionData.klevu;
+
+const platformName = isAthos ? 'Athos' : 'Klevu';
+
+const badgeClass = isAthos ? 'ss' : 'klevu';
+
+
+
+// **NEW:** Check for Docs URL and create the link element
+
+let docsLinkHTML = '';
+
+if (isAthos && platformData.docsUrl) {
+
+docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
+
+<a href="${platformData.docsUrl}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
+
+🚀 View Official Athos Docs
+
+</a>
+
+</div>`;
+
+}
+
+// Update Labels
+
+labelSS.classList.toggle('active', isAthos);
+
+labelKlevu.classList.toggle('active', !isAthos);
+
+contentArea.classList.toggle('klevu-theme', !isAthos);
+
+
+
+
+
+// Generate HTML
+
+let contentHTML;
+
+if (currentSection === 'autocomplete') {
+
+// For Autocomplete, inject the code structure with sub-sections and append the docs link at the end.
+
+contentHTML = platformData.code + docsLinkHTML;
+
+} else {
+
+// For all other simple sections, use the standard template.
+
+contentHTML = `
+
+<div class="description-box">
+
+${platformData.desc}
+
+</div>
+
+<div class="code-header">
+
+<span>Request Format</span>
+
+<span>${isAthos ? 'REST API (GET)' : 'REST API (POST)'}</span>
+
+</div>
+
+<pre><code>${platformData.code}</code></pre>
+
+${docsLinkHTML}
+
+`;
+
+}
+
+
+
+contentArea.innerHTML = `
+
+<span class="badge ${badgeClass}">${platformName} Implementation</span>
+
+<h2>${sectionData.title}</h2>
+
+${contentHTML}
+
+`;
+
+}
+
+
+
+// --- EVENT LISTENERS ---
+
+toggle.addEventListener('change', (e) => {
+
+isAthos = e.target.checked;
+
+render();
+
+});
+
+
+
+function setSection(section) {
+
+currentSection = section;
+
+
+
+// Update Nav UI
+
+navItems.forEach((el) => {
+
+el.classList.remove('active');
+
+if (el.getAttribute('onclick').includes(section)) {
+
+el.classList.add('active');
+
+}
+
+});
+
+
+
+render();
+
+}
+
+
+
+// Initial Render
+
+navItems.forEach(el => { // Find the initial active item and set currentSection
+
+if (el.getAttribute('onclick').includes('autocomplete')) {
+
+el.classList.add('active');
+
+currentSection = 'autocomplete';
+
+} else {
+
+el.classList.remove('active');
+
+}
+
+});
+
+render();
+
+
+
+</script>
+
+
 
 </body>
+
+
 
 </html>
