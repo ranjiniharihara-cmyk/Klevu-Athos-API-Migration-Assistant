@@ -367,12 +367,14 @@ GET https://js.klevu.com/klevu-js-v1/klevu-js-api/{apiKey}.json</code></pre>
 localStorage.getItem('klevu_recent_searches')</code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3>Typed Search: Products / CMS / Category</h3>
+                        <h3>Typed Search: Products / CMS / Category / autosuggestions</h3>
                         <p>Sent as a single POST request with multiple objects in the <code>recordQueries</code> array.</p>
                         <pre><code><span class="com">// Klevu: Single Monolithic POST request</span>
 POST /cs/v2/search
 {
   <span class="key">"recordQueries"</span>: [
+     <span class="com">// Object 1: autosuggestion</span>
+    { <span class="key">"id"</span>: <span class="str">"autosuggestion"</span>, ... }, 
     <span class="com">// Object 1: Products</span>
     { <span class="key">"id"</span>: <span class="str">"productSearch"</span>, ... }, 
     <span class="com">// Object 2: CMS</span>
