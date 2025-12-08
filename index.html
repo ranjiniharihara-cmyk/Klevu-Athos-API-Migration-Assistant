@@ -216,6 +216,14 @@
             padding-bottom: 5px;
             color: var(--ss-color);
         }
+        
+        /* Style for the link icon */
+        .sub-section h3 a {
+            color: var(--ss-color); 
+            font-size: 0.9em; 
+            text-decoration: none; 
+            margin-left: 10px;
+        }
 
         .badge {
             display: inline-block;
@@ -323,25 +331,23 @@
     </div>
 
     <script>
-                // --- DOCUMENTATION LINKS MAPPING ---
-        // Use this object to manage all external Athos documentation links.
+        // --- DOCUMENTATION LINKS MAPPING ---
+        // Using generic Searchspring links as placeholders for your Athos documentation
         const docs_links = {
-            // Autocomplete Links
-            TRENDING_QUERIES: 'https://docs.searchspring.com/reference/get-trending', // From your example
-            AUTOCOMPLETE_BASE: 'https://docs.searchspring.com/reference/get-autocomplete',
-
-            // Core Search Links
+            // General Endpoints
             SEARCH_API: 'https://docs.searchspring.com/reference/get-search',
-
-            // Category/Merchandising Links
             CATEGORY_PAGES: 'https://docs.searchspring.com/reference/category-result-pages',
-
-            // Recommendations/Personalization Links
             RECOMMENDATIONS: 'https://docs.searchspring.com/reference/get-recommendations',
+            ANALYTICS_TRACKING: 'https://docs.searchspring.com/reference/post-beacon',
 
-            // Analytics/Tracking Links
-            ANALYTICS_TRACKING: 'https://docs.searchspring.com/reference/post-beacon'
+            // Autocomplete Sub-Endpoints (Specific URLs)
+            TRENDING_QUERIES: 'https://docs.searchspring.com/reference/get-trending', // User's specific link
+            AUTOCOMPLETE_BASE: 'https://docs.searchspring.com/reference/get-autocomplete',
+            
+            // Merchandising/Recs Sub-Endpoints
+            BACKGROUND_FILTER: 'https://docs.Athos.com/reference/background-filters' // Custom placeholder link
         };
+
         // --- DATA STORE (ALL MAPPINGS) ---
         const data = {
             autocomplete: {
@@ -370,8 +376,9 @@ POST /cs/v2/search
   <span class="key">"recordQueries"</span>: [
     <span class="com">// Object 1: Products</span>
     { <span class="key">"id"</span>: <span class="str">"productSearch"</span>, ... }, 
-    <span class="com">// Object 2: CMS/Categories (Combined)</span>
-    { <span class="key">"id"</span>: <span class="str">"cmsSearch"</span>, <span class="key">"typeOfRecords"</span>: <span class="str">"KLEVU_CMS"</span>, ... } 
+    <span class="com">// Object 2: CMS</span>
+    { <span class="key">"id"</span>: <span class="str">"cmsSearch"</span>, <span class="key">"typeOfRecords"</span>: <span class="str">"KLEVU_CMS"</span>, ... }, 
+    <span class="com">// Object 3: Category</span>
     { <span class="key">"id"</span>: <span class="str">"categorySearch"</span>, <span class="key">"typeOfRecords"</span>: <span class="str">"KLEVU_CATEGORY"</span>, ... } 
   ]
 }</code></pre>
@@ -382,14 +389,14 @@ POST /cs/v2/search
                     desc: "Athos requires **Parallel Requests** and uses specialized endpoints. Categories and CMS pages are typically indexed in a separate 'Content' Site ID for performance and modularity.",
                     code: `
                     <div class="sub-section">
-                        <h3>Zero-Term: Trending Searches (Queries)</h3>
+                        <h3>Zero-Term: Trending Searches (Queries) </h3>
                         <p>Uses a dedicated API for fetching aggregate popular search terms.</p>
                         <pre><code><span class="com">// Athos Trending Queries API:</span>
 GET https://{siteId}.a.Athos.io/api/suggest/trending.json
 ?siteId=<span class="str">{Main_Site_ID}</span></code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3>Zero-Term: Trending Products</h3>
+                        <h3>Zero-Term: Trending Products </h3>
                         <p>This is a **Recommendation API** call using a configured Profile Tag.</p>
                         <pre><code><span class="com">// Athos Recommendations API:</span>
 GET /boost/recommendations/recommend
@@ -400,10 +407,10 @@ GET /boost/recommendations/recommend
                         <h3>Zero-Term: Recent Searches</h3>
                         <p>The terms will have to be stored in a local array and retrieved on client side.</p>
                         <pre><code><span class="com">// Athos: Implement logic to read/write search history.</span>
-localStorage.setItem('athos_recent_searches', JSON.stringify(terms)) <span class="com">// Variable name corrected</span></code></pre>
+localStorage.setItem('athos_recent_searches', JSON.stringify(terms))</code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3>Typed Search: Products (Main Index)</h3>
+                        <h3>Typed Search: Products (Main Index) </h3>
                         <p>Dedicated Autocomplete endpoint for fast product and term suggestions.</p>
                         <pre><code><span class="com">// Req A: PRODUCTS (Main Site ID)</span>
 GET /api/search/autocomplete.json
@@ -411,7 +418,7 @@ GET /api/search/autocomplete.json
 &q=<span class="str">boots</span></code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3>Typed Search: Categories & CMS (Content Index)</h3>
+                        <h3>Typed Search: Categories & CMS (Content Index) </h3>
                         <p>Parallel request to the **Content Site ID** to fetch non-product results for a tabbed view.</p>
                         <pre><code><span class="com">// Req B: CATEGORIES & CMS (Content Site ID)</span>
 GET /api/search/autocomplete.json
@@ -419,7 +426,7 @@ GET /api/search/autocomplete.json
 &q=<span class="str">boots</span></code></pre>
                     </div>
                 `,
-                    docsUrl: docs_links.TRENDING_QUERIES
+                    docsUrl: docs_links.AUTOCOMPLETE_BASE // Main link for the tab
                 }
             },
             search: {
@@ -458,7 +465,7 @@ GET /api/search/autocomplete.json
 &filter.color=<span class="str">Blue</span>
 &filter.price_range_custom=<span class="str">100-200</span>`
                 },
-                docsUrl: 'https://docs.Athos.com/reference/get-search' // Placeholder link
+                docsUrl: docs_links.SEARCH_API // Main link for the tab
             },
             category: {
                 title: "Category/Collection Pages",
@@ -491,7 +498,7 @@ GET /api/search/autocomplete.json
 <span class="com">// Alternately, filter by hierarchy string if indexed:</span>
 <span class="com">// &bgfilter.hierarchy="Men > Shoes > Running"</span>`
                 },
-                docsUrl: 'https://docs.Athos.com/reference/category-page-merchandising' // Placeholder link
+                docsUrl: docs_links.CATEGORY_PAGES // Main link for the tab
             },
             recs: {
                 title: "Recommendations (Product & Cart)",
@@ -525,7 +532,7 @@ GET /api/search/autocomplete.json
 &tags=<span class="str">cart-cross-sell</span>
 &cart=<span class="str">SKU-123,SKU-456</span> <span class="com">// Comma-separated items in cart</span>`
                 },
-                docsUrl: 'https://docs.Athos.com/reference/get-recommendations' // Placeholder link
+                docsUrl: docs_links.RECOMMENDATIONS // Main link for the tab
             },
             analytics: {
                 title: "Analytics & IntelliSuggest Tracking",
@@ -556,7 +563,7 @@ https://{siteId}.a.Athos.io/api/track/track.json
 &d=<span class="str">eJxyz...</span> <span class="com">// REQUIRED</span>
 &s=<span class="str">58a2b...</span> <span class="com">// REQUIRED</span>`
                 },
-                docsUrl: 'https://docs.Athos.com/reference/analytics-tracking' // Placeholder link
+                docsUrl: docs_links.ANALYTICS_TRACKING // Main link for the tab
             }
         };
 
@@ -571,57 +578,54 @@ https://{siteId}.a.Athos.io/api/track/track.json
         const navItems = document.querySelectorAll('.nav-item');
 
         // --- UPDATED RENDER FUNCTION TO INCLUDE DOCS LINK ---
-        // --- UPDATED RENDER FUNCTION ---
-    function render() {
-        const sectionData = data[currentSection];
-        const platformData = isAthos ? sectionData.ss : sectionData.klevu;
-        const platformName = isAthos ? 'Athos' : 'Klevu';
-        const badgeClass = isAthos ? 'ss' : 'klevu';
+        function render() {
+            const sectionData = data[currentSection];
+            const platformData = isAthos ? sectionData.ss : sectionData.klevu;
+            const platformName = isAthos ? 'Athos' : 'Klevu';
+            const badgeClass = isAthos ? 'ss' : 'klevu';
 
-        // **NEW:** Check for Docs URL and create the link element for the entire section
-        let docsLinkHTML = '';
-        if (isAthos && platformData.docsUrl) {
-            docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
+            // **1. Section Link (Appears once at bottom)**
+            let docsLinkHTML = '';
+            if (isAthos && platformData.docsUrl) {
+                docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
                                 <a href="${platformData.docsUrl}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
                                     🚀 View Official Athos Docs
                                 </a>
                             </div>`;
-        }
-
-        // Update Labels
-        labelSS.classList.toggle('active', isAthos);
-        labelKlevu.classList.toggle('active', !isAthos);
-        contentArea.classList.toggle('klevu-theme', !isAthos);
-
-
-        // Generate HTML
-        let contentHTML;
-        if (currentSection === 'autocomplete') {
-            
-            let zeroTermHeading = '<h3>Zero-Term: Trending Searches (Queries)</h3>';
-            
-            // Only add the link icon to the Zero-Term Trending Searches heading in Athos mode
-            if (isAthos) {
-                const trendingUrl = docs_links.TRENDING_QUERIES;
-                const linkIcon = `<a href="${trendingUrl}" target="_blank" style="color: var(--ss-color); font-size: 1em; text-decoration: none; margin-left: 10px;">🔗</a>`;
-                zeroTermHeading = `<h3>Zero-Term: Trending Searches (Queries)${linkIcon}</h3>`;
-            }
-
-            // Replace the standard H3 with the new linked H3 inside the Athos autocomplete code
-            let modifiedCode = platformData.code;
-            if (isAthos) {
-                // This is a robust way to replace the plain H3 text with the linked H3 text
-                modifiedCode = modifiedCode.replace(
-                    '<h3>Zero-Term: Trending Searches (Queries)</h3>',
-                    zeroTermHeading
-                );
             }
             
-            contentHTML = modifiedCode + docsLinkHTML;
+            // **2. Sub-Block Link Insertion Logic (For Athos only)**
+            let finalCode = platformData.code;
             
-        } else {
-            // For all other simple sections, use the standard template.
-            contentHTML = `
+            // Only modify Athos code blocks with the link icon
+            if (isAthos) {
+                // Regex to find the unique placeholder: const linkRegex = //g;
+                
+                finalCode = finalCode.replace(linkRegex, (match, key) => {
+                    const url = docs_links[key]; // Use the key to lookup the URL
+                    if (url) {
+                        // Insert the link icon right after the <h3> closing tag
+                        const linkIcon = `<a href="${url}" target="_blank" style="color: var(--ss-color); font-size: 0.9em; text-decoration: none; margin-left: 10px;">🔗</a>`;
+                        return linkIcon; // The regex replaces the placeholder comment with the link icon
+                    }
+                    return ''; // Remove comment if link key is missing
+                });
+            }
+
+
+            // Update Labels
+            labelSS.classList.toggle('active', isAthos);
+            labelKlevu.classList.toggle('active', !isAthos);
+            contentArea.classList.toggle('klevu-theme', !isAthos);
+
+
+            // Generate HTML
+            let contentHTML;
+            if (currentSection === 'autocomplete') {
+                contentHTML = finalCode + docsLinkHTML;
+            } else {
+                // For all other simple sections, use the standard template.
+                contentHTML = `
                 <div class="description-box">
                     ${platformData.desc}
                 </div>
@@ -629,19 +633,18 @@ https://{siteId}.a.Athos.io/api/track/track.json
                     <span>Request Format</span>
                     <span>${isAthos ? 'REST API (GET)' : 'REST API (POST)'}</span>
                 </div>
-                <pre><code>${platformData.code}</code></pre>
+                <pre><code>${finalCode}</code></pre>
                 ${docsLinkHTML}
             `;
-        }
+            }
 
-        contentArea.innerHTML = `
+            contentArea.innerHTML = `
             <span class="badge ${badgeClass}">${platformName} Implementation</span>
             <h2>${sectionData.title}</h2>
             ${contentHTML}
         `;
-    }
+        }
 
-    // ... (rest of the script remains the same)
         // --- EVENT LISTENERS ---
         toggle.addEventListener('change', (e) => {
             isAthos = e.target.checked;
