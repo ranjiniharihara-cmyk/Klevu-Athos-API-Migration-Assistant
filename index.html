@@ -589,25 +589,29 @@ https://{siteId}.a.Athos.io/api/track/track.json
         const labelSS = document.getElementById('label-ss');
         const navItems = document.querySelectorAll('.nav-item');
 
-        // --- UPDATED RENDER FUNCTION TO INCLUDE SUB-BLOCK LINKS ---
+// --- UPDATED RENDER FUNCTION TO INCLUDE SUB-BLOCK LINKS ---
         function render() {
             const sectionData = data[currentSection];
             const platformData = isAthos ? sectionData.ss : sectionData.klevu;
             const platformName = isAthos ? 'Athos' : 'Klevu';
             const badgeClass = isAthos ? 'ss' : 'klevu';
 
-            // Link Mapping (for sub-sections)
+            // Link Mapping (for sub-sections) - (This remains unchanged)
             const linkMap = {
+                // ... (link map content)
                 'TRENDING_QUERIES': docs_links.TRENDING_QUERIES,
                 'RECOMMENDATIONS': docs_links.RECOMMENDATIONS,
                 'AUTOCOMPLETE_BASE': docs_links.AUTOCOMPLETE_BASE,
-                'CONTENT_SEARCH': docs_links.CONTENT_SEARCH, // Added the content link key
+                'CONTENT_SEARCH': docs_links.CONTENT_SEARCH,
                 'ANALYTICS_TRACKING': docs_links.ANALYTICS_TRACKING
             };
 
             // **1. Section Link (Appears once at bottom)**
             let docsLinkHTML = '';
-            const mainDocsUrl = 'https://docs.searchspring.com/reference/getting-started-welcome';
+            
+            // FIX APPLIED HERE: Override the URL to the general Getting Started page
+            const mainDocsUrl = 'https://docs.searchspring.com/reference/getting-started-welcome'; 
+            
             if (isAthos) {
                 docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
                                 <a href="${mainDocsUrl}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
@@ -621,7 +625,6 @@ https://{siteId}.a.Athos.io/api/track/track.json
             
             // Only modify Athos code blocks with the link icon
             if (isAthos) {
-                // FIX: Corrected regex to capture the link key inside the placeholder span
                 const linkRegex = /<span class="link-placeholder" data-link="([A-Z_]+)"><\/span>/g;
                 
                 finalCode = finalCode.replace(linkRegex, (match, key) => {
