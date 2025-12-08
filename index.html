@@ -352,9 +352,10 @@
             ANALYTICS_TRACKING: 'https://docs.searchspring.com/reference/post-beacon',
 
             // Autocomplete Sub-Endpoints (Specific URLs)
-            TRENDING_QUERIES: 'https://docs.searchspring.com/reference/get-trending', // The specific link requested
+            TRENDING_QUERIES: 'https://docs.searchspring.com/reference/get-trending',
             AUTOCOMPLETE_BASE: 'https://docs.searchspring.com/reference/get-autocomplete',
-
+            CONTENT_SEARCH: 'https://docs.searchspring.com/reference/content-results', // Corrected Link
+            
             // Merchandising/Recs Sub-Endpoints (Placeholder)
             BACKGROUND_FILTER: 'https://docs.Athos.com/reference/background-filters'
         };
@@ -429,7 +430,7 @@ GET /api/search/autocomplete.json
 &q=<span class="str">boots</span></code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3>Typed Search: Categories & CMS (Content Index) <span class="link-placeholder" data-link="AUTOCOMPLETE_BASE"></span></h3>
+                        <h3>Typed Search: Categories & CMS (Content Index) <span class="link-placeholder" data-link="CONTENT_SEARCH"></span></h3>
                         <p>Parallel request to the **Content Site ID** to fetch non-product results for a tabbed view.</p>
                         <pre><code><span class="com">// Req B: CATEGORIES & CMS (Content Site ID)</span>
 GET /api/search/autocomplete.json
@@ -437,7 +438,7 @@ GET /api/search/autocomplete.json
 &q=<span class="str">boots</span></code></pre>
                     </div>
                 `,
-                    docsUrl: docs_links.AUTOCOMPLETE_BASE // Main link for the tab
+                    docsUrl: docs_links.CONTENT_SEARCH // Main link for the tab
                 }
             },
             search: {
@@ -579,7 +580,7 @@ https://{siteId}.a.Athos.io/api/track/track.json
         };
 
         // --- STATE MANAGEMENT & RENDERING LOGIC ---
-        let currentSection = 'autocomplete';
+        let currentSection = 'autocomplete'; 
         let isAthos = false;
 
         const toggle = document.getElementById('platformToggle');
@@ -595,11 +596,12 @@ https://{siteId}.a.Athos.io/api/track/track.json
             const platformName = isAthos ? 'Athos' : 'Klevu';
             const badgeClass = isAthos ? 'ss' : 'klevu';
 
-            // Link Mapping (for sub-sections) - Replicating the logic from the previous step
+            // Link Mapping (for sub-sections)
             const linkMap = {
                 'TRENDING_QUERIES': docs_links.TRENDING_QUERIES,
                 'RECOMMENDATIONS': docs_links.RECOMMENDATIONS,
                 'AUTOCOMPLETE_BASE': docs_links.AUTOCOMPLETE_BASE,
+                'CONTENT_SEARCH': docs_links.CONTENT_SEARCH, // Added the content link key
                 'ANALYTICS_TRACKING': docs_links.ANALYTICS_TRACKING
             };
 
@@ -612,17 +614,17 @@ https://{siteId}.a.Athos.io/api/track/track.json
                                 </a>
                             </div>`;
             }
-
+            
             // **2. Sub-Block Link Insertion Logic**
             let finalCode = platformData.code;
-
+            
             // Only modify Athos code blocks with the link icon
             if (isAthos) {
-                // FIX: Added the correct linkRegex to capture the placeholder comment: <span class="link-placeholder" data-link="KEY"></span>
+                // FIX: Corrected regex to capture the link key inside the placeholder span
                 const linkRegex = /<span class="link-placeholder" data-link="([A-Z_]+)"><\/span>/g;
-
+                
                 finalCode = finalCode.replace(linkRegex, (match, key) => {
-                    const url = linkMap[key]; // Use the key to lookup the URL
+                    const url = linkMap[key]; 
                     if (url) {
                         // The link icon replaces the placeholder span
                         return `<a href="${url}" target="_blank" style="color: var(--ss-color); font-size: 0.9em; text-decoration: none; margin-left: 10px; flex-shrink: 0;">🔗</a>`;
@@ -658,7 +660,7 @@ https://{siteId}.a.Athos.io/api/track/track.json
             }
 
             contentArea.innerHTML = `
-            <span class="badge ${badgeClass}">${platformName} Implementation</span>
+            <span class="badge ${badgeCode}">${platformName} Implementation</span>
             <h2>${sectionData.title}</h2>
             ${contentHTML}
         `;
