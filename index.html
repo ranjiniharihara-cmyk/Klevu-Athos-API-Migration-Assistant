@@ -216,12 +216,12 @@
             padding-bottom: 5px;
             color: var(--ss-color);
         }
-        
+
         /* Style for the link icon */
         .sub-section h3 a {
-            color: var(--ss-color); 
-            font-size: 0.9em; 
-            text-decoration: none; 
+            color: var(--ss-color);
+            font-size: 0.9em;
+            text-decoration: none;
             margin-left: 10px;
         }
 
@@ -343,7 +343,7 @@
             // Autocomplete Sub-Endpoints (Specific URLs)
             TRENDING_QUERIES: 'https://docs.searchspring.com/reference/get-trending', // User's specific link
             AUTOCOMPLETE_BASE: 'https://docs.searchspring.com/reference/get-autocomplete',
-            
+
             // Merchandising/Recs Sub-Endpoints
             BACKGROUND_FILTER: 'https://docs.Athos.com/reference/background-filters' // Custom placeholder link
         };
@@ -593,14 +593,14 @@ https://{siteId}.a.Athos.io/api/track/track.json
                                 </a>
                             </div>`;
             }
-            
+
             // **2. Sub-Block Link Insertion Logic (For Athos only)**
             let finalCode = platformData.code;
-            
+
             // Only modify Athos code blocks with the link icon
             if (isAthos) {
                 // Regex to find the unique placeholder: const linkRegex = //g;
-                
+
                 finalCode = finalCode.replace(linkRegex, (match, key) => {
                     const url = docs_links[key]; // Use the key to lookup the URL
                     if (url) {
