@@ -31,7 +31,6 @@
             background: white;
             width: 100%;
             max-width: 950px;
-            /* Increased max-width for better code visibility */
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             display: flex;
@@ -207,7 +206,6 @@
             font-size: 14px;
             line-height: 1.5;
             margin-bottom: 25px;
-            /* Added spacing for separation */
         }
 
         .sub-section h3 {
@@ -216,24 +214,26 @@
             padding-bottom: 5px;
             color: var(--ss-color);
             display: flex;
-            /* Enable flex for alignment */
             align-items: center;
-            /* Vertically align text and icon */
             justify-content: space-between;
-            /* Push link to the right, if needed */
+            /* Ensure alignment */
         }
 
-        .sub-section h3 span.title-text {
+        /* FIX: Ensure the text content is wrapped so the link has space on the right */
+        .sub-section h3 .heading-content {
             flex-grow: 1;
-            /* Allow title text to take up space */
         }
 
         /* Style for the link icon container */
+        .sub-section h3 .link-placeholder {
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+
         .sub-section h3 .link-placeholder a {
             color: var(--ss-color);
             font-size: 0.9em;
             text-decoration: none;
-            margin-left: 10px;
             flex-shrink: 0;
         }
 
@@ -343,24 +343,11 @@
     </div>
 
     <script>
-        // --- DOCUMENTATION LINKS MAPPING ---
-        const docs_links = {
-            // General Endpoints
-            SEARCH_API: 'https://docs.searchspring.com/reference/get-search',
-            CATEGORY_PAGES: 'https://docs.searchspring.com/reference/category-result-pages',
-            RECOMMENDATIONS: 'https://docs.searchspring.com/reference/get-recommendations',
-            ANALYTICS_TRACKING: 'https://docs.searchspring.com/reference/post-beacon',
-
-            // Autocomplete Sub-Endpoints (Specific URLs)
-            TRENDING_QUERIES: 'https://docs.searchspring.com/reference/get-trending',
-            AUTOCOMPLETE_BASE: 'https://docs.searchspring.com/reference/get-autocomplete',
-            CONTENT_SEARCH: 'https://docs.searchspring.com/reference/content-results', // Corrected Link
-            
-            // Merchandising/Recs Sub-Endpoints (Placeholder)
-            BACKGROUND_FILTER: 'https://docs.Athos.com/reference/background-filters'
-        };
+        // --- BASE DOCS URL (Used for the main footer link) ---
+        const BASE_DOCS_URL = 'https://docs.searchspring.com/reference/getting-started-welcome';
 
         // --- DATA STORE (ALL MAPPINGS) ---
+        // The URL is now defined right on the Athos code structure (data-link)
         const data = {
             autocomplete: {
                 title: "Autocomplete & Instant Search",
@@ -401,14 +388,14 @@ POST /cs/v2/search
                     desc: "Athos requires **Parallel Requests** and uses specialized endpoints. Categories and CMS pages are typically indexed in a separate 'Content' Site ID for performance and modularity.",
                     code: `
                     <div class="sub-section">
-                        <h3>Zero-Term: Trending Searches (Queries) <span class="link-placeholder" data-link="TRENDING_QUERIES"></span></h3>
+                        <h3><span class="heading-content">Zero-Term: Trending Searches (Queries)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-trending"></span></h3>
                         <p>Uses a dedicated API for fetching aggregate popular search terms.</p>
                         <pre><code><span class="com">// Athos Trending Queries API:</span>
 GET https://{siteId}.a.Athos.io/api/suggest/trending.json
 ?siteId=<span class="str">{Main_Site_ID}</span></code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3>Zero-Term: Trending Products <span class="link-placeholder" data-link="RECOMMENDATIONS"></span></h3>
+                        <h3><span class="heading-content">Zero-Term: Trending Products</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-recommendations"></span></h3>
                         <p>This is a **Recommendation API** call using a configured Profile Tag.</p>
                         <pre><code><span class="com">// Athos Recommendations API:</span>
 GET /boost/recommendations/recommend
@@ -416,13 +403,13 @@ GET /boost/recommendations/recommend
 &tags=<span class="str">autocomplete-trending</span></code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3>Zero-Term: Recent Searches</h3>
+                        <h3><span class="heading-content">Zero-Term: Recent Searches</span></h3>
                         <p>The terms will have to be stored in a local array and retrieved on client side.</p>
                         <pre><code><span class="com">// Athos: Implement logic to read/write search history.</span>
 localStorage.setItem('athos_recent_searches', JSON.stringify(terms))</code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3>Typed Search: Products (Main Index) <span class="link-placeholder" data-link="AUTOCOMPLETE_BASE"></span></h3>
+                        <h3><span class="heading-content">Typed Search: Products (Main Index)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-autocomplete"></span></h3>
                         <p>Dedicated Autocomplete endpoint for fast product and term suggestions.</p>
                         <pre><code><span class="com">// Req A: PRODUCTS (Main Site ID)</span>
 GET /api/search/autocomplete.json
@@ -430,7 +417,7 @@ GET /api/search/autocomplete.json
 &q=<span class="str">boots</span></code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3>Typed Search: Categories & CMS (Content Index) <span class="link-placeholder" data-link="CONTENT_SEARCH"></span></h3>
+                        <h3><span class="heading-content">Typed Search: Categories & CMS (Content Index)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/content-results"></span></h3>
                         <p>Parallel request to the **Content Site ID** to fetch non-product results for a tabbed view.</p>
                         <pre><code><span class="com">// Req B: CATEGORIES & CMS (Content Site ID)</span>
 GET /api/search/autocomplete.json
@@ -438,7 +425,7 @@ GET /api/search/autocomplete.json
 &q=<span class="str">boots</span></code></pre>
                     </div>
                 `,
-                    docsUrl: docs_links.CONTENT_SEARCH // Main link for the tab
+                    docsUrl: BASE_DOCS_URL // Main link for the tab
                 }
             },
             search: {
@@ -477,7 +464,7 @@ GET /api/search/autocomplete.json
 &filter.color=<span class="str">Blue</span>
 &filter.price_range_custom=<span class="str">100-200</span>`
                 },
-                docsUrl: docs_links.SEARCH_API // Main link for the tab
+                docsUrl: BASE_DOCS_URL
             },
             category: {
                 title: "Category/Collection Pages",
@@ -510,7 +497,7 @@ GET /api/search/autocomplete.json
 <span class="com">// Alternately, filter by hierarchy string if indexed:</span>
 <span class="com">// &bgfilter.hierarchy="Men > Shoes > Running"</span>`
                 },
-                docsUrl: docs_links.CATEGORY_PAGES // Main link for the tab
+                docsUrl: BASE_DOCS_URL
             },
             recs: {
                 title: "Recommendations (Product & Cart)",
@@ -544,7 +531,7 @@ GET /api/search/autocomplete.json
 &tags=<span class="str">cart-cross-sell</span>
 &cart=<span class="str">SKU-123,SKU-456</span> <span class="com">// Comma-separated items in cart</span>`
                 },
-                docsUrl: docs_links.RECOMMENDATIONS // Main link for the tab
+                docsUrl: BASE_DOCS_URL
             },
             analytics: {
                 title: "Analytics & IntelliSuggest Tracking",
@@ -575,12 +562,12 @@ https://{siteId}.a.Athos.io/api/track/track.json
 &d=<span class="str">eJxyz...</span> <span class="com">// REQUIRED</span>
 &s=<span class="str">58a2b...</span> <span class="com">// REQUIRED</span>`
                 },
-                docsUrl: docs_links.ANALYTICS_TRACKING // Main link for the tab
+                docsUrl: BASE_DOCS_URL
             }
         };
 
         // --- STATE MANAGEMENT & RENDERING LOGIC ---
-        let currentSection = 'autocomplete'; 
+        let currentSection = 'autocomplete';
         let isAthos = false;
 
         const toggle = document.getElementById('platformToggle');
@@ -596,40 +583,33 @@ https://{siteId}.a.Athos.io/api/track/track.json
             const platformName = isAthos ? 'Athos' : 'Klevu';
             const badgeClass = isAthos ? 'ss' : 'klevu';
 
-            // Link Mapping (for sub-sections)
-            const linkMap = {
-                'TRENDING_QUERIES': docs_links.TRENDING_QUERIES,
-                'RECOMMENDATIONS': docs_links.RECOMMENDATIONS,
-                'AUTOCOMPLETE_BASE': docs_links.AUTOCOMPLETE_BASE,
-                'CONTENT_SEARCH': docs_links.CONTENT_SEARCH, // Added the content link key
-                'ANALYTICS_TRACKING': docs_links.ANALYTICS_TRACKING
-            };
-
             // **1. Section Link (Appears once at bottom)**
             let docsLinkHTML = '';
-            if (isAthos && platformData.docsUrl) {
+
+            // The main link uses the BASE_DOCS_URL defined globally
+            if (isAthos) {
                 docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
-                                <a href="${platformData.docsUrl}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
+                                <a href="${BASE_DOCS_URL}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
                                     🚀 View Official Athos Docs
                                 </a>
                             </div>`;
             }
-            
+
             // **2. Sub-Block Link Insertion Logic**
             let finalCode = platformData.code;
-            
+
             // Only modify Athos code blocks with the link icon
             if (isAthos) {
-                // FIX: Corrected regex to capture the link key inside the placeholder span
-                const linkRegex = /<span class="link-placeholder" data-link="([A-Z_]+)"><\/span>/g;
-                
-                finalCode = finalCode.replace(linkRegex, (match, key) => {
-                    const url = linkMap[key]; 
+                // Regex to find the unique placeholder: <span class="link-placeholder" data-link="URL"></span>
+                // Capture group 1 is the URL defined in the data-link attribute
+                const linkRegex = /<span class="link-placeholder" data-link="([^"]+)">/g;
+
+                finalCode = finalCode.replace(linkRegex, (match, url) => {
                     if (url) {
                         // The link icon replaces the placeholder span
                         return `<a href="${url}" target="_blank" style="color: var(--ss-color); font-size: 0.9em; text-decoration: none; margin-left: 10px; flex-shrink: 0;">🔗</a>`;
                     }
-                    return ''; // Remove placeholder if link key is missing
+                    return ''; // Remove placeholder if URL is missing
                 });
             }
 
@@ -660,7 +640,7 @@ https://{siteId}.a.Athos.io/api/track/track.json
             }
 
             contentArea.innerHTML = `
-            <span class="badge ${badgeCode}">${platformName} Implementation</span>
+            <span class="badge ${badgeClass}">${platformName} Implementation</span>
             <h2>${sectionData.title}</h2>
             ${contentHTML}
         `;
