@@ -538,18 +538,44 @@ GET /api/search/suggest.json
 }`
                 },
                 ss: {
-                    desc: "Athos decouples logic from code. You configure the logic in the Console and use a <b>Profile Tag</b> in the request. This is the Recommendations API.",
-                    code: `<span class="com">// Athos: GET /boost/recommendations/recommend</span>
+                    desc: `Athos uses a **POST** request to the Recommendations API when complex logic or multiple profiles are requested in a single call. The system decouples logic from code—you configure the rules in the Console and reference them in the payload.
+           <div style="margin-top: 10px; text-align: right;">
+               <a href="https://docs.searchspring.com/reference/post-recommendations" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                   Recommendations API Documentation 🔗
+               </a>
+           </div>
+           <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+           <p style="font-weight: 600; margin-bottom: 5px;">Note on Payload Structure:</p>
+           <p>The <b>Profiles</b> object consists of multiple configurations to specify limit, categories, etc. One is <b>deduping</b>, which prevents the same product from appearing in multiple recommendation profiles within a single batch. This is useful when you have several recommendation profiles on a page and want to ensure a diverse range of products is shown to the shopper.</p>
+           <p>The <b>Filters</b> object is used to define filtering configurations (e.g., excluding the current product SKU).</p>`,
+                    code: `<span class="com">// Athos Endpoint: POST /boost/recommendations/recommend</span>
 
-<span class="com">// 1. PDP Recommendations:</span>
-?siteId=<span class="str">abc1234</span>
-&tags=<span class="str">pdp-also-viewed</span> <span class="com">// Profile Tag from Console</span>
-&product=<span class="str">SKU-123</span> <span class="com">// Context of current product</span>
-
-<span class="com">// 2. Cart Recommendations:</span>
-?siteId=<span class="str">abc1234</span>
-&tags=<span class="str">cart-cross-sell</span>
-&cart=<span class="str">SKU-123,SKU-456</span> <span class="com">// Comma-separated items in cart</span>`
+{
+  <span class="key">"profiles"</span>: [
+    {
+      <span class="key">"categories"</span>: [
+        <span class="str">"Men"</span>
+      ],
+      <span class="key">"tag"</span>: <span class="str">"recently-viewed"</span>,
+      <span class="key">"limit"</span>: <span class="num">10</span>,
+      <span class="key">"dedupe"</span>: <span class="key">true</span>
+    },
+    {
+      <span class="key">"tag"</span>: <span class="str">"Trending"</span>,
+      <span class="key">"limit"</span>: <span class="num">10</span>,
+      <span class="key">"dedupe"</span>: <span class="key">true</span>
+    }
+  ],
+  <span class="key">"filters"</span>: [
+    {
+      <span class="key">"values"</span>: [
+        <span class="str">"abc123"</span>
+      ],
+      <span class="key">"field"</span>: <span class="str">"sku"</span>,
+      <span class="key">"type"</span>: <span class="str">"notEqual"</span>
+    }
+  ]
+}`
                 },
                 docsUrl: BASE_DOCS_URL
             },
