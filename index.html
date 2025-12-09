@@ -501,7 +501,12 @@ GET /api/search/suggest.json
 }`
                 },
                 ss: {
-                    desc: "In Athos, this is a <b>Zero-Result Search</b>. You leave the query <code>q=</code> empty, and apply a <b>Background Filter</b>. This loads the merchandising config for that specific category.",
+                    desc: `In Athos,leave the query <code>q=</code> empty, and apply a <b>Background Filter</b>. This loads the merchandising config for that specific category.
+                   <div style="margin-top: 10px; text-align: right;">
+                       <a href="https://docs.searchspring.com/reference/category-result-pages" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                           Category Pages API Documentation 🔗
+                       </a>
+                   </div>`,
                     code: `<span class="com">// Athos: GET /api/search/search.json</span>
 
 <span class="com">// Query Parameters:</span>
