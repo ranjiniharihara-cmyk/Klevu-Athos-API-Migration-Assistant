@@ -582,7 +582,7 @@ GET /api/search/suggest.json
             analytics: {
                 title: "Analytics & IntelliSuggest Tracking",
                 klevu: {
-                    desc: "Klevu tracks events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>, passing the event type and product ID.",
+                    desc: "Klevu tracks search and click events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>. Along with this, it also collects purchase data through an API endpoint.",
                     code: `<span class="com">// Klevu Click Tracking URL</span>
 https://stats.ksearchnet.com/analytics/collect
 ?klevu_apiKey=<span class="str">klevu-123</span>
