@@ -335,6 +335,7 @@
                 <div class="nav-item" onclick="setSection('category')">Category Pages</div>
                 <div class="nav-item" onclick="setSection('recs')">Recommendations</div>
                 <div class="nav-item" onclick="setSection('analytics')">Analytics - not ready</div>
+                <div class="nav-item" onclick="setSection('filtering')">Filtering / Advanced</div>
             </div>
 
             <div class="content" id="content-area">
@@ -609,7 +610,69 @@ https://{siteId}.a.Athos.io/api/track/track.json
 &s=<span class="str">58a2b...</span> <span class="com">// REQUIRED</span>`
                 },
                 docsUrl: BASE_DOCS_URL
-            }
+            },
+            // Add this new section at the end of your existing 'data' object definition
+filtering: {
+    title: "Filtering & Advanced Faceting",
+    klevu: {
+        desc: "Klevu requires the front-end developer to use specific API parameters to control the display and behavior of filters (facets) in search and category results. Advanced filters require complex modifications to the outgoing search query.",
+        code: `
+                <div class="sub-section">
+                    <h3>Facet Visibility & Limits</h3>
+                    <p>To control which facets appear or how many options are displayed, the developer must override the API parameters in the outgoing query.</p>
+                    <pre><code><span class="com">// Klevu: Example of modifying filter limits using klevu.modifyRequest</span>
+klevu.modifyRequest("landing", 
+  "productList.filters.filtersToReturn.options.limit", <span class="num">20</span>
+);</code></pre>
+                </div>
+                <div class="sub-section">
+                    <h3>Advanced Filtering (Group Conditions)</h3>
+                    <p>Creating complex logical filters (e.g., brand A **AND** color blue) requires applying a <code>groupCondition</code> object to the query payload.</p>
+                    <pre><code><span class="com">// Klevu: Advanced Filtering (Requires Developer to define rules in code)</span>
+klevu.modifyRequest("landing", "productList.settings.groupCondition", {
+    <span class="key">"groupOperator"</span>: <span class="str">"ALL_OF"</span>, 
+    <span class="key">"conditions"</span>: [
+        { <span class="key">"key"</span>: <span class="str">"brand"</span>, <span class="key">"values"</span>: [<span class="str">"ACME"</span>] }
+    ]
+});</code></pre>
+                    <div style="margin-top: 10px; text-align: right;">
+                        <a href="https://docs.klevu.com/apis/advanced-filtering" target="_blank" style="color: var(--klevu-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                            Klevu Advanced Filtering Docs 🔗
+                        </a>
+                    </div>
+                </div>
+            `
+    },
+    ss: {
+        desc: `Athos does not require specific API calls for filter behavior; it is entirely controlled via the **Merchandising Console**.
+               <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+               <p style="font-weight: 600; margin-bottom: 5px;">Merchandising Flexibility:</p>
+               <p>Athos provides more flexibility to the merchandiser so they can define filter behavior, order, and advanced rules *without* reaching out to the developer. All changes are instant and managed through the UI, including:
+               <ul>
+                    <li>**Facet Visibility & Ordering:** Tailor filters for every product listing page (search, category, landing).</li>
+                    <li>**Visual Merchandising:** Promote key products using Boost Rules or Enhanced Pinning, which often negates the need for code-based filtering.</li>
+                    <li>**Instant Control:** Choose algorithm type, apply background filters, and set boost rules directly from the console.</li>
+               </ul>
+               </p>
+               <div style="margin-top: 20px; text-align: right;">
+                   <a href="https://help.searchspring.net/hc/en-us/articles/115000993946-Visual-Merchandising" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                       Visual Merchandising Console Docs 🔗
+                   </a>
+               </div>`,
+        code: `
+                <div class="sub-section">
+                    <h3>Zero-Code Merchandising for Filtering</h3>
+                    <p>Filter rules are applied server-side using the <b>Merchandising Console</b>, not client-side code.</p>
+                    <pre><code><span class="com">// Athos: No specific API call is required for facet control.</span>
+<span class="com">// All rules are managed in the Athos UI:</span>
+<span class="com">// 1. Navigate to: Merchandising > Campaigns</span>
+<span class="com">// 2. Apply rules (e.g., Pin, Hide, Boost) to Search or Category Pages.</span>
+<span class="com">// 3. Control filter display via: Search & Category Alignment settings.</span></code></pre>
+                </div>
+                `
+    },
+    docsUrl: 'https://help.searchspring.net/hc/en-us/articles/201184909-Filtering' // Base link for Athos
+}
         };
 
         // --- STATE MANAGEMENT & RENDERING LOGIC ---
