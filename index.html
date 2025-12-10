@@ -339,7 +339,7 @@
                 <div class="nav-item" onclick="setSection('category')">Category Pages</div>
                 <div class="nav-item" onclick="setSection('recs')">Recommendations</div>
                 <div class="nav-item" onclick="setSection('analytics')">Analytics - not ready</div>
-                <div class="nav-item" onclick="setSection('filtering')">Filtering / Advanced</div>
+                <div class="nav-item" onclick="setSection('filtering')">Filtering / Advanced Faceting</div>
             </div>
 
             <div class="content" id="content-area">
@@ -616,19 +616,42 @@ https://{siteId}.a.Athos.io/api/track/track.json
             },
             filtering: {
                 title: "Filtering & Advanced Faceting",
-                klevu: {
-                    desc: `Klevu requires the front-end developer to use specific API parameters to control the display and behavior of filters (facets) in search and category results. Advanced filters require complex modifications to the outgoing search query.
-					<hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-					<p style="font-weight: 600; margin-bottom: 5px;">Klevu Developer Requirements:</p>
-					<p>To control which facets appear or how many options are displayed, the developer must override the API parameters (e.g., using <code>klevu.modifyRequest</code>) in the outgoing query.</p>
-					<p>Creating complex logical filters (e.g., brand A **AND** color blue) requires applying a <code>groupCondition</code> object to the query payload.</p>
-					<div style="margin-top: 10px; text-align: right;">
-						<a href="https://docs.klevu.com/apis/advanced-filtering" target="_blank" style="color: var(--klevu-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-							Klevu Advanced Filtering Docs 🔗
-						</a>
-					</div>`,
-                    code: `` // NO CODE BLOCK NEEDED
-                },
+klevu: {
+    desc: `Klevu requires the front-end developer to use specific API parameters or structured conditions to control the display and complex behavior of filters (facets) in search and category results.`,
+    code: `
+                <div class="sub-section">
+                    <h3>Facet Visibility & Limits</h3>
+                    <p>While Klevu automatically generates facets, controlling the number of values shown (for performance) or disabling them requires setting specific parameters within the search API call, or configuring them via the Klevu Merchant Centre.</p>
+                    <pre><code><span class="com">// Klevu: Example of controlling filter response size for better performance.</span>
+POST /cs/v2/search
+{
+  <span class="key">"settings"</span>: {
+    <span class="key">"query"</span>: { ... },
+    <span class="key">"maxNoOfValuesInAFilter"</span>: <span class="num">10</span> <span class="com">// Limits facet options returned</span>
+  }
+}</code></pre>
+                </div>
+                <div class="sub-section">
+                    <h3>Advanced Filtering (Group Conditions)</h3>
+                    <p>Creating complex logical filters (e.g., brand A **AND** color blue) requires the developer to submit a structured <code>groupCondition</code> object as part of the search query payload.</p>
+                    <pre><code><span class="com">// Klevu: Advanced Filtering (Setting a groupCondition parameter in the request)</span>
+{
+  <span class="com">// This structure is sent as a parameter in the API request JSON:</span>
+  <span class="key">"groupCondition"</span>: {
+    <span class="key">"groupOperator"</span>: <span class="str">"ALL_OF"</span>, <span class="com">// ALL_OF, ANY_OF, NONE_OF</span>
+    <span class="key">"conditions"</span>: [
+        { <span class="key">"key"</span>: <span class="str">"brand"</span>, <span class="key">"valueOperator"</span>: <span class="str">"INCLUDE"</span>, <span class="key">"values"</span>: [<span class="str">"ACME"</span>] }
+    ]
+  }
+}</code></pre>
+                    <div style="margin-top: 10px; text-align: right;">
+                        <a href="https://docs.klevu.com/apis/advanced-filtering" target="_blank" style="color: var(--klevu-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                            Klevu Advanced Filtering Docs 🔗
+                        </a>
+                    </div>
+                </div>
+            `
+},
                 ss: {
                     desc: `Athos provides more flexibility to the merchandiser so they can define filter behavior, order, and advanced rules **without reaching out to the developer**. The functionality is entirely controlled via the **Merchandising Console**.
 					<hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
