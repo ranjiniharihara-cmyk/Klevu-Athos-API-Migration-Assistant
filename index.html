@@ -615,18 +615,31 @@ https://{siteId}.a.Athos.io/api/track/track.json
                 docsUrl: BASE_DOCS_URL
             },
             filtering: {
-                title: "Filtering & Advanced Faceting",
+                title: "Faceting & Advanced Filtering ",
 klevu: {
-                    desc: `With Klevu API implimentation, developers use specific API parameters or structured conditions to control the display and complex behavior of filters (facets) in search and category results.,
+                    desc: `Klevu requires the front-end developer to use specific API parameters or structured conditions to control the display and complex behavior of filters (facets) in search and category results.
                 <div class="sub-section">
-                    <h3>Facet Visibility & Limits</h3>
-                    <p>While Klevu automatically generates facets, controlling the number of values shown (for performance) or disabling them requires setting specific parameters within the search API call, or configuring them via the Klevu Merchant Centre.</p>
-                    <pre><code><span class="com">// Klevu: Example of controlling filter response size for better performance.</span>
+                    <h3>Facet Visibility, Ordering & Limits</h3>
+                    <p>Controlling which filters are displayed (visibility), the order in which they appear (ordering), and the number of values shown (limits) is managed by defining them in the APIs.</p>
+                    <pre><code><span class="com">// Klevu: Example of controlling which filters are returned and setting limits.</span>
 POST /cs/v2/search
 {
   <span class="key">"settings"</span>: {
     <span class="key">"query"</span>: { ... },
-    <span class="key">"maxNoOfValuesInAFilter"</span>: <span class="num">10</span> <span class="com">// Limits facet options returned</span>
+    <span class="key">"filters"</span>: {
+      <span class="key">"filtersToReturn"</span>: {
+        <span class="key">"enabled"</span>: <span class="key">true</span>,
+        <span class="key">"include"</span>: [
+          <span class="str">"category"</span>,
+          <span class="str">"brand"</span>,
+          <span class="str">"size"</span>
+        ],
+        <span class="key">"options"</span>: {
+          <span class="key">"order"</span>: <span class="str">"INDEX"</span>, <span class="com">// INDEX, COUNT, ALPHABETICAL</span>
+          <span class="key">"limit"</span>: <span class="num">5</span> <span class="com">// Limits facet options returned to 5</span>
+        }
+      }
+    }
   }
 }</code></pre>
                 </div>
@@ -649,7 +662,7 @@ POST /cs/v2/search
                         </a>
                     </div>
                 </div>`,
-                    code: ` `
+                    code: `` // Code block intentionally left empty for external rendering via 'desc'
                 },
                 ss: {
                     desc: `Athos provides more flexibility to the merchandiser so they can define filter behavior, order, and advanced rules **without reaching out to the developer**. The functionality is entirely controlled via the **Merchandising Console**.
