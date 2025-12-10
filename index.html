@@ -340,6 +340,7 @@
                 <div class="nav-item" onclick="setSection('recs')">Recommendations</div>
                 <div class="nav-item" onclick="setSection('analytics')">Analytics - not ready</div>
                 <div class="nav-item" onclick="setSection('filtering')">Filtering / Advanced Faceting</div>
+                <div class="nav-item" onclick="setSection('configs')">Configurations</div>
             </div>
 
             <div class="content" id="content-area">
@@ -391,7 +392,7 @@ POST /cs/v2/search
                 `
                 },
                 ss: {
-                    desc: "Athos requires **Parallel Requests** and uses specialized endpoints. Categories and CMS pages are typically indexed in a separate 'Content' Site ID for performance and modularity.",
+                    desc: "Athos requires Parallel Requests and uses specialized endpoints. Categories and CMS pages are typically indexed in a separate 'Content' Site ID for performance and modularity.",
                     code: `
                     <div class="sub-section">
                         <h3><span class="heading-content">Zero-Term: Trending Searches (Queries)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-trending"></span></h3>
@@ -402,7 +403,7 @@ GET https://{siteId}.a.Athos.io/api/suggest/trending.json
                     </div>
                     <div class="sub-section">
                         <h3><span class="heading-content">Zero-Term: Trending Products</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-recommendations"></span></h3>
-                        <p>This is a **Recommendation API** call using a configured Profile Tag.</p>
+                        <p>This is a Recommendation API call using a configured Profile Tag.</p>
                         <pre><code><span class="com">// Athos Recommendations API:</span>
 GET /boost/recommendations/recommend
 ?siteId=<span class="str">{Main_Site_ID}</span>
@@ -424,7 +425,7 @@ GET /api/search/autocomplete.json
                     </div>
                     <div class="sub-section">
                         <h3><span class="heading-content">Typed Search: Categories & CMS (Content Index)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/content-results"></span></h3>
-                        <p>Parallel request to the **Content Site ID** to fetch non-product results for a tabbed view.</p>
+                        <p>Parallel request to the Content Site ID to fetch non-product results for a tabbed view.</p>
                         <pre><code><span class="com">// Req B: CATEGORIES & CMS (Content Site ID)</span>
 GET /api/search/autocomplete.json
 ?siteId=<span class="str">{Content_Site_ID}</span>
@@ -432,7 +433,7 @@ GET /api/search/autocomplete.json
                     </div>
                     <div class="sub-section">
                         <h3><span class="heading-content">Suggested APIs (Query Suggestions)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-suggest"></span></h3>
-                        <p>Dedicated Suggestions API for fetching relevant **related terms** based on partial user input. More details on how Athos creates suggestions <span class="link-placeholder" data-link="https://help.searchspring.net/hc/en-us/articles/360050241231-How-Autocomplete-suggestions-are-created"></span> </p>
+                        <p>Dedicated Suggestions API for fetching relevant related terms based on partial user input. More details on how Athos creates suggestions <span class="link-placeholder" data-link="https://help.searchspring.net/hc/en-us/articles/360050241231-How-Autocomplete-suggestions-are-created"></span> </p>
                         <pre><code><span class="com">// Req C: QUERY SUGGESTIONS (Main Site ID)</span>
 GET /api/search/suggest.json
 ?siteId=<span class="str">{Main_Site_ID}</span>
@@ -542,7 +543,7 @@ GET /api/search/suggest.json
 }`
                 },
                 ss: {
-                    desc: `Athos uses a **POST** request to the Recommendations API when complex logic or multiple profiles are requested in a single call. The system decouples logic from code—you configure the rules in the Console and reference them in the payload.
+                    desc: `Athos uses a POST request to the Recommendations API when complex logic or multiple profiles are requested in a single call. The system decouples logic from code—you configure the rules in the Console and reference them in the payload.
 					<div style="margin-top: 10px; text-align: right;">
 						<a href="https://docs.searchspring.com/reference/post-recommendations" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
 							Recommendations API Documentation 🔗
@@ -594,7 +595,21 @@ https://stats.ksearchnet.com/analytics/collect
 &klevu_productId=<span class="str">SKU-123</span>`
                 },
                 ss: {
-                    desc: "Athos requires <b>Data (d)</b> and <b>Signature (s)</b> validation. These strings must be captured from the original Search Response and passed back to track the event correctly.",
+                    desc: `Athos requires <b>Data (d)</b> and <b>Signature (s)</b> validation for product tracking. These strings must be captured from the original Search Response and passed back with the tracking beacon to validate the event and credit the correct search session.
+           <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+           <p style="font-weight: 600; margin-bottom: 5px;">Key Analytics Events:</p>
+           <ul>
+               <li>Search and Click Tracking: Requires <code>d</code> and <code>s</code> parameters from the search result for validation.</li>
+               <li>Purchase Tracking: Sent to a separate dedicated Purchase API endpoint for order confirmation and revenue attribution.</li>
+           </ul>
+           <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
+               <a href="https://docs.searchspring.com/reference/intelli-suggest-20-click-tracking" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                   Search & Click Tracking Docs 🔗
+               </a>
+               <a href="https://docs.searchspring.com/reference/purchase-tracking" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                   Purchase Tracking Docs 🔗
+               </a>
+           </div>`,
                     code: `<span class="com">// 1. Search Response (Capture data):</span>
 {
    "results": [
@@ -616,9 +631,10 @@ https://{siteId}.a.Athos.io/api/track/track.json
             },
             filtering: {
                 title: "Faceting & Advanced Filtering ",
-klevu: {
+                klevu: {
+                    // FIX: Consolidated Klevu filtering content into the desc string and corrected structure
                     desc: `Klevu requires the front-end developer to use specific API parameters or structured conditions to control the display and complex behavior of filters (facets) in search and category results.
-                <div class="sub-section">
+                <div class="sub-section" style="margin-top: 15px;">
                     <h3>Facet Visibility, Ordering & Limits</h3>
                     <p>Controlling which filters are displayed (visibility), the order in which they appear (ordering), and the number of values shown (limits) is managed by defining them in the APIs.</p>
                     <pre><code><span class="com">// Klevu: Example of controlling which filters are returned and setting limits.</span>
@@ -645,7 +661,7 @@ POST /cs/v2/search
                 </div>
                 <div class="sub-section">
                     <h3>Advanced Filtering (Group Conditions)</h3>
-                    <p>Creating complex logical filters (e.g., brand A **AND** color blue) requires the developer to submit a structured <code>groupCondition</code> object as part of the search query payload.</p>
+                    <p>Creating complex logical filters (e.g., brand A AND color blue) requires the developer to submit a structured <code>groupCondition</code> object as part of the search query payload.</p>
                     <pre><code><span class="com">// Klevu: Advanced Filtering (Setting a groupCondition parameter in the request)</span>
 {
   <span class="com">// This structure is sent as a parameter in the API request JSON:</span>
@@ -673,17 +689,53 @@ POST /cs/v2/search
 						<li>Visual Merchandising: Promote key products using Boost Rules or Enhanced Pinning and controll filter ordering per campaign (search term, category, landing page, etc)</li>
 					</ul>
 					</p>
-                    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
-                        <a href="https://help.searchspring.net/hc/en-us/articles/201184909-Filtering" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                            Filtering Rules Documentation 🔗
-                        </a>
-                        <a href="https://help.searchspring.net/hc/en-us/articles/115000993946-Visual-Merchandising" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                            Visual Merchandising Console Docs 🔗
-                        </a>
-                    </div>`,
+                    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
+                        <a href="https://help.searchspring.net/hc/en-us/articles/201184909-Filtering" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                            Filtering Rules Documentation 🔗
+                        </a>
+                        <a href="https://help.searchspring.net/hc/en-us/articles/115000993946-Visual-Merchandising" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                            Visual Merchandising Console Docs 🔗
+                        </a>
+                    </div>`,
                     code: `` // NO CODE BLOCK NEEDED
                 },
                 docsUrl: 'https://help.searchspring.net/hc/en-us/articles/201184909-Filtering'
+            },
+            configs: {
+                title: "Core Search & Merchandising Configurations",
+                klevu: {
+                    desc: `Klevu exposes numerous search and category merchandising settings, preferences, and fine-tuning options through its APIs. These configurations are typically managed by the developer directly via the payload structure.
+                   <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+                   <p style="font-weight: 600; margin-bottom: 5px;">Key Klevu API Configurations:</p>
+                   <ul>
+                       <li>Sorting: Defining sorting option in the API.</li>
+                       <li>Pagination: Specify Page size and results per page in API.</li>
+                       <li>Fields: Managed by explicitly listing required product fields in the payload.</li>
+                       <li>Grouping Results: Used to group variants through Name </li>
+                       <li>Type of Search: Specify the search type like wildcard match or Fuzzy match.</li>
+                       <li>Search preferences: Settings to fine tune queries.</li>
+                   </ul>`,
+                    code: `` // No code block needed
+                },
+                ss: {
+                    desc: `Athos generally moves these configurations from the code layer to the Merchandising Console or utilizes simple query parameters, giving more control to the merchandiser.
+                   <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+                   <p style="font-weight: 600; margin-bottom: 5px;">Athos Configuration Mapping:</p>
+                   <ul>
+                       <li>Sorting: Any eligible Indexed attribute can be used as a sorting option, configurable in the admin. This provides more control to the merchandiser.
+                           <div style="margin-top: 5px; font-size: 0.9em;"><a href="https://help.searchspring.net/hc/en-us/articles/206986683-Sort-Options" target="_blank" style="color: var(--ss-color); text-decoration: none;">Sort Options Docs 🔗</a></div>
+                       </li>
+                       <li>Pagination: Pagination is defined through the <code>resultsPerPage</code> and <code>page</code> query parameters in the search API call.</li>
+                       <li>Fields: Fields to be returned in the response (display) and fields to be used for search/filters (searchable/filterable) are configured in the Field Settings section.
+                           <div style="margin-top: 5px; font-size: 0.9em;"><a href="https://help.searchspring.net/hc/en-us/articles/203776879-4-Managing-Field-Settings" target="_blank" style="color: var(--ss-color); text-decoration: none;">Field Settings Docs 🔗</a></div>
+                       </li>
+                       <li>Grouping Results: Grouping results is not currently available in Athos.</li>
+                       <li>Type of Search: Athos has concepts like Strict Search and Expanded Search, which manage query interpretation.</li>
+                       <li>Search preferences: There are no exact configurations in Athos, but handling out-of-stock visibility or deboosting them can be handled through Merchandising Rules. For any other search-specific configurations, please reach out to your PM at the time of implementation.</li>
+                   </ul>`,
+                    code: `` // No code block needed
+                },
+                docsUrl: BASE_DOCS_URL
             }
         };
 
@@ -745,7 +797,7 @@ POST /cs/v2/search
             if (currentSection === 'autocomplete') {
                 contentHTML = finalCode + docsLinkHTML;
             } else {
-                // START: Conditional Code Block Rendering Logic (Addresses Point 2)
+                // START: Conditional Code Block Rendering Logic
                 let codeBlockHTML = '';
                 // Only render the code block and header if code exists and is not just whitespace
                 if (platformData.code.trim().length > 0) {
