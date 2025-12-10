@@ -165,10 +165,13 @@
             margin-top: 0;
         }
 
+        /* UPDATED: Remove background and excessive padding, but keep the border */
         .description-box {
-            background: #eef9ff;
+            background: none;
+            /* REMOVED BACKGROUND COLOR */
             border-left: 4px solid var(--ss-color);
-            padding: 15px;
+            padding: 0 0 0 15px;
+            /* REMOVED PADDING ON TOP/BOTTOM/RIGHT */
             margin-bottom: 20px;
             border-radius: 4px;
             font-size: 15px;
@@ -176,7 +179,8 @@
         }
 
         .klevu-theme .description-box {
-            background: #fff5ee;
+            background: none;
+            /* REMOVED BACKGROUND COLOR */
             border-left: 4px solid var(--klevu-color);
         }
 
@@ -348,7 +352,6 @@
         const BASE_DOCS_URL = 'https://docs.searchspring.com/reference/getting-started-welcome';
 
         // --- DATA STORE (ALL MAPPINGS) ---
-        // The URL is now defined right on the Athos code structure (data-link)
         const data = {
             autocomplete: {
                 title: "Autocomplete & Instant Search",
@@ -374,7 +377,7 @@ localStorage.getItem('klevu_recent_searches')</code></pre>
 POST /cs/v2/search
 {
   <span class="key">"recordQueries"</span>: [
-     <span class="com">// Object 1: autosuggestion</span>
+      <span class="com">// Object 1: autosuggestion</span>
     { <span class="key">"id"</span>: <span class="str">"autosuggestion"</span>, ... }, 
     <span class="com">// Object 2: Products</span>
     { <span class="key">"id"</span>: <span class="str">"productSearch"</span>, ... }, 
@@ -463,11 +466,11 @@ GET /api/search/suggest.json
                 },
                 ss: {
                     desc: `Athos uses a standard <b>GET</b> request. Pagination uses <code>page</code> numbers (1, 2, 3...). Filters are flattened into query parameters using the <code>filter.field</code> syntax.
-                   <div style="margin-top: 10px; text-align: right;">
-                       <a href="https://docs.searchspring.com/reference/get-search" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                           Search API Documentation 🔗
-                       </a>
-                   </div>`,
+					<div style="margin-top: 10px; text-align: right;">
+						<a href="https://docs.searchspring.com/reference/get-search" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+							Search API Documentation 🔗
+						</a>
+					</div>`,
                     code: `<span class="com">// Athos Endpoint: GET /api/search/search.json</span>
 
 <span class="com">// Query Parameters:</span>
@@ -502,12 +505,12 @@ GET /api/search/suggest.json
 }`
                 },
                 ss: {
-                    desc: `In Athos,leave the query <code>q=</code> empty, and apply a <b>Background Filter</b>. This loads the merchandising config for that specific category.
-                   <div style="margin-top: 10px; text-align: right;">
-                       <a href="https://docs.searchspring.com/reference/category-result-pages" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                           Category Pages API Documentation 🔗
-                       </a>
-                   </div>`,
+                    desc: `In Athos, leave the query <code>q=</code> empty, and apply a <b>Background Filter</b>. This loads the merchandising config for that specific category.
+					<div style="margin-top: 10px; text-align: right;">
+						<a href="https://docs.searchspring.com/reference/category-result-pages" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+							Category Pages API Documentation 🔗
+						</a>
+					</div>`,
                     code: `<span class="com">// Athos: GET /api/search/search.json</span>
 
 <span class="com">// Query Parameters:</span>
@@ -530,9 +533,9 @@ GET /api/search/suggest.json
     {
        <span class="key">"typeOfRequest"</span>: <span class="str">"RECS_ALSO_VIEWED"</span>,
        <span class="key">"context"</span>: {
-          <span class="key">"recentObjects"</span>: [
+         <span class="key">"recentObjects"</span>: [
              { <span class="key">"type"</span>: <span class="str">"product"</span>, <span class="key">"id"</span>: <span class="str">"SKU-123"</span> }
-          ]
+         ]
        }
     }
   ]
@@ -540,15 +543,15 @@ GET /api/search/suggest.json
                 },
                 ss: {
                     desc: `Athos uses a **POST** request to the Recommendations API when complex logic or multiple profiles are requested in a single call. The system decouples logic from code—you configure the rules in the Console and reference them in the payload.
-           <div style="margin-top: 10px; text-align: right;">
-               <a href="https://docs.searchspring.com/reference/post-recommendations" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                   Recommendations API Documentation 🔗
-               </a>
-           </div>
-           <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-           <p style="font-weight: 600; margin-bottom: 5px;">Note on Payload Structure:</p>
-           <p>The <b>Profiles</b> object consists of multiple configurations to specify limit, categories, etc. One is <b>deduping</b>, which prevents the same product from appearing in multiple recommendation profiles within a single batch. This is useful when you have several recommendation profiles on a page and want to ensure a diverse range of products is shown to the shopper.</p>
-           <p>The <b>Filters</b> object is used to define filtering configurations (e.g., excluding the current product SKU).</p>`,
+					<div style="margin-top: 10px; text-align: right;">
+						<a href="https://docs.searchspring.com/reference/post-recommendations" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+							Recommendations API Documentation 🔗
+						</a>
+					</div>
+					<hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+					<p style="font-weight: 600; margin-bottom: 5px;">Note on Payload Structure:</p>
+					<p>The <b>Profiles</b> object consists of multiple configurations to specify limit, categories, etc. One is <b>deduping</b>, which prevents the same product from appearing in multiple recommendation profiles within a single batch. This is useful when you have several recommendation profiles on a page and want to ensure a diverse range of products is shown to the shopper.</p>
+					<p>The <b>Filters</b> object is used to define filtering configurations (e.g., excluding the current product SKU).</p>`,
                     code: `<span class="com">// Athos Endpoint: POST /boost/recommendations/recommend</span>
 
 {
@@ -595,11 +598,11 @@ https://stats.ksearchnet.com/analytics/collect
                     code: `<span class="com">// 1. Search Response (Capture data):</span>
 {
    "results": [
-      {
-         "id": "SKU-123",
-         "intelliSuggestData": "eJxyz...", <span class="com">// Capture 'd'</span>
-         "intelliSuggestSignature": "58a2b..." <span class="com">// Capture 's'</span>
-      }
+     {
+       "id": "SKU-123",
+       "intelliSuggestData": "eJxyz...", <span class="com">// Capture 'd'</span>
+       "intelliSuggestSignature": "58a2b..." <span class="com">// Capture 's'</span>
+     }
    ]
 }
 
@@ -611,68 +614,44 @@ https://{siteId}.a.Athos.io/api/track/track.json
                 },
                 docsUrl: BASE_DOCS_URL
             },
-            // Add this new section at the end of your existing 'data' object definition
-filtering: {
-    title: "Filtering & Advanced Faceting",
-    klevu: {
-        desc: "Klevu requires the front-end developer to use specific API parameters to control the display and behavior of filters (facets) in search and category results. Advanced filters require complex modifications to the outgoing search query.",
-        code: `
-                <div class="sub-section">
-                    <h3>Facet Visibility & Limits</h3>
-                    <p>To control which facets appear or how many options are displayed, the developer must override the API parameters in the outgoing query.</p>
-                    <pre><code><span class="com">// Klevu: Example of modifying filter limits using klevu.modifyRequest</span>
-klevu.modifyRequest("landing", 
-  "productList.filters.filtersToReturn.options.limit", <span class="num">20</span>
-);</code></pre>
-                </div>
-                <div class="sub-section">
-                    <h3>Advanced Filtering (Group Conditions)</h3>
-                    <p>Creating complex logical filters (e.g., brand A **AND** color blue) requires applying a <code>groupCondition</code> object to the query payload.</p>
-                    <pre><code><span class="com">// Klevu: Advanced Filtering (Requires Developer to define rules in code)</span>
-klevu.modifyRequest("landing", "productList.settings.groupCondition", {
-    <span class="key">"groupOperator"</span>: <span class="str">"ALL_OF"</span>, 
-    <span class="key">"conditions"</span>: [
-        { <span class="key">"key"</span>: <span class="str">"brand"</span>, <span class="key">"values"</span>: [<span class="str">"ACME"</span>] }
-    ]
-});</code></pre>
-                    <div style="margin-top: 10px; text-align: right;">
-                        <a href="https://docs.klevu.com/apis/advanced-filtering" target="_blank" style="color: var(--klevu-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                            Klevu Advanced Filtering Docs 🔗
+            filtering: {
+                title: "Filtering & Advanced Faceting",
+                klevu: {
+                    desc: `Klevu requires the front-end developer to use specific API parameters to control the display and behavior of filters (facets) in search and category results. Advanced filters require complex modifications to the outgoing search query.
+					<hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+					<p style="font-weight: 600; margin-bottom: 5px;">Klevu Developer Requirements:</p>
+					<p>To control which facets appear or how many options are displayed, the developer must override the API parameters (e.g., using <code>klevu.modifyRequest</code>) in the outgoing query.</p>
+					<p>Creating complex logical filters (e.g., brand A **AND** color blue) requires applying a <code>groupCondition</code> object to the query payload.</p>
+					<div style="margin-top: 10px; text-align: right;">
+						<a href="https://docs.klevu.com/apis/advanced-filtering" target="_blank" style="color: var(--klevu-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+							Klevu Advanced Filtering Docs 🔗
+						</a>
+					</div>`,
+                    code: `` // NO CODE BLOCK NEEDED
+                },
+                ss: {
+                    desc: `Athos provides more flexibility to the merchandiser so they can define filter behavior, order, and advanced rules **without reaching out to the developer**. The functionality is entirely controlled via the **Merchandising Console**.
+					<hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+					<p style="font-weight: 600; margin-bottom: 5px;">Zero-Code Merchandising for Filtering:</p>
+					<p>Filter rules are applied server-side using the Merchandising Console, not client-side code. All changes are managed through the UI, including:
+					<ul>
+						<li>**Facet Visibility & Ordering:** Tailor filters for every product listing page (search, category, landing).</li>
+						<li>**Visual Merchandising:** Promote key products using Boost Rules or Enhanced Pinning, which often negates the need for code-based filtering.</li>
+						<li>**Instant Control:** Choose algorithm type, apply background filters, and set boost rules directly from the console.</li>
+					</ul>
+					</p>
+                    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
+                        <a href="https://help.searchspring.net/hc/en-us/articles/201184909-Filtering" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                            Filtering Rules Documentation 🔗
                         </a>
-                    </div>
-                </div>
-            `
-    },
-    ss: {
-        desc: `Athos does not require specific API calls for filter behavior; it is entirely controlled via the **Merchandising Console**.
-               <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-               <p style="font-weight: 600; margin-bottom: 5px;">Merchandising Flexibility:</p>
-               <p>Athos provides more flexibility to the merchandiser so they can define filter behavior, order, and advanced rules *without* reaching out to the developer. All changes are instant and managed through the UI, including:
-               <ul>
-                    <li>**Facet Visibility & Ordering:** Tailor filters for every product listing page (search, category, landing).</li>
-                    <li>**Visual Merchandising:** Promote key products using Boost Rules or Enhanced Pinning, which often negates the need for code-based filtering.</li>
-                    <li>**Instant Control:** Choose algorithm type, apply background filters, and set boost rules directly from the console.</li>
-               </ul>
-               </p>
-               <div style="margin-top: 20px; text-align: right;">
-                   <a href="https://help.searchspring.net/hc/en-us/articles/115000993946-Visual-Merchandising" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                       Visual Merchandising Console Docs 🔗
-                   </a>
-               </div>`,
-        code: `
-                <div class="sub-section">
-                    <h3>Zero-Code Merchandising for Filtering</h3>
-                    <p>Filter rules are applied server-side using the <b>Merchandising Console</b>, not client-side code.</p>
-                    <pre><code><span class="com">// Athos: No specific API call is required for facet control.</span>
-<span class="com">// All rules are managed in the Athos UI:</span>
-<span class="com">// 1. Navigate to: Merchandising > Campaigns</span>
-<span class="com">// 2. Apply rules (e.g., Pin, Hide, Boost) to Search or Category Pages.</span>
-<span class="com">// 3. Control filter display via: Search & Category Alignment settings.</span></code></pre>
-                </div>
-                `
-    },
-    docsUrl: 'https://help.searchspring.net/hc/en-us/articles/201184909-Filtering' // Base link for Athos
-}
+                        <a href="https://help.searchspring.net/hc/en-us/articles/115000993946-Visual-Merchandising" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                            Visual Merchandising Console Docs 🔗
+                        </a>
+                    </div>`,
+                    code: `` // NO CODE BLOCK NEEDED
+                },
+                docsUrl: 'https://help.searchspring.net/hc/en-us/articles/201184909-Filtering'
+            }
         };
 
         // --- STATE MANAGEMENT & RENDERING LOGIC ---
@@ -685,7 +664,7 @@ klevu.modifyRequest("landing", "productList.settings.groupCondition", {
         const labelSS = document.getElementById('label-ss');
         const navItems = document.querySelectorAll('.nav-item');
 
-        // --- UPDATED RENDER FUNCTION TO INCLUDE SUB-BLOCK LINKS ---
+        // --- UPDATED RENDER FUNCTION ---
         function render() {
             const sectionData = data[currentSection];
             const platformData = isAthos ? sectionData.ss : sectionData.klevu;
@@ -704,13 +683,12 @@ klevu.modifyRequest("landing", "productList.settings.groupCondition", {
                             </div>`;
             }
 
-            // **2. Sub-Block Link Insertion Logic**
+            // **2. Sub-Block Link Insertion Logic (Only for Autocomplete)**
             let finalCode = platformData.code;
 
-            // Only modify Athos code blocks with the link icon
+            // Only modify Autocomplete code blocks with the link icon (Autosuggestion logic is handled here)
             if (isAthos) {
                 // Regex to find the unique placeholder: <span class="link-placeholder" data-link="URL"></span>
-                // Capture group 1 is the URL defined in the data-link attribute
                 const linkRegex = /<span class="link-placeholder" data-link="([^"]+)">/g;
 
                 finalCode = finalCode.replace(linkRegex, (match, url) => {
@@ -734,25 +712,38 @@ klevu.modifyRequest("landing", "productList.settings.groupCondition", {
             if (currentSection === 'autocomplete') {
                 contentHTML = finalCode + docsLinkHTML;
             } else {
+                // START: Conditional Code Block Rendering Logic (Addresses Point 2)
+                let codeBlockHTML = '';
+                // Only render the code block and header if code exists and is not just whitespace
+                if (platformData.code.trim().length > 0) {
+                    // Update the REST API label for the Recs tab where it is POST
+                    const apiMethod = (currentSection === 'recs' && isAthos) ? 'REST API (POST)' : 'REST API (GET)';
+
+                    codeBlockHTML = `
+                        <div class="code-header">
+                            <span>Request Format</span>
+                            <span>${apiMethod}</span>
+                        </div>
+                        <pre><code>${finalCode}</code></pre>
+                    `;
+                }
+                // END: Conditional Code Block Rendering Logic
+
                 // For all other simple sections, use the standard template.
                 contentHTML = `
-                <div class="description-box">
-                    ${platformData.desc}
-                </div>
-                <div class="code-header">
-                    <span>Request Format</span>
-                    <span>${isAthos ? 'REST API (GET)' : 'REST API (POST)'}</span>
-                </div>
-                <pre><code>${finalCode}</code></pre>
-                ${docsLinkHTML}
-            `;
+                    <div class="description-box">
+                        ${platformData.desc}
+                    </div>
+                    ${codeBlockHTML} 
+                    ${docsLinkHTML}
+                `;
             }
 
             contentArea.innerHTML = `
-            <span class="badge ${badgeClass}">${platformName} Implementation</span>
-            <h2>${sectionData.title}</h2>
-            ${contentHTML}
-        `;
+                <span class="badge ${badgeClass}">${platformName} Implementation</span>
+                <h2>${sectionData.title}</h2>
+                ${contentHTML}
+            `;
         }
 
         // --- EVENT LISTENERS ---
