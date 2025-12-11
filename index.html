@@ -584,51 +584,34 @@ GET /api/search/suggest.json
                 },
                 docsUrl: BASE_DOCS_URL
             },
-            analytics: {
-                title: "Analytics & IntelliSuggest Tracking",
-                klevu: {
-                    desc: "Klevu tracks search and click events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>. Along with this, it also collects purchase data through an API endpoint.",
-                    code: `<span class="com">// Klevu Click Tracking URL</span>
+analytics: {
+    title: "Analytics & IntelliSuggest Tracking",
+    klevu: {
+        desc: "Klevu tracks search and click events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>. Along with this, it also collects purchase data through an API endpoint.",
+        code: `<span class="com">// Klevu Click Tracking URL</span>
 https://stats.ksearchnet.com/analytics/collect
 ?klevu_apiKey=<span class="str">klevu-123</span>
 &klevu_type=<span class="str">clicked</span>
 &klevu_productId=<span class="str">SKU-123</span>`
-                },
-                ss: {
-                    desc: `Athos requires <b>Data (d)</b> and <b>Signature (s)</b> validation for product tracking. These strings must be captured from the original Search Response and passed back with the tracking beacon to validate the event and credit the correct search session.
-           <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-           <p style="font-weight: 600; margin-bottom: 5px;">Key Analytics Events:</p>
-           <ul>
-               <li>Search and Click Tracking: Requires <code>d</code> and <code>s</code> parameters from the search result for validation.</li>
-               <li>Purchase Tracking: Sent to a separate dedicated Purchase API endpoint for order confirmation and revenue attribution.</li>
-           </ul>
-           <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
-               <a href="https://docs.searchspring.com/reference/intelli-suggest-20-click-tracking" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                   Search & Click Tracking Docs 🔗
+    },
+    ss: {
+        desc: `For product-related actions (Search, Click, View), Athos requires **Intellisuggest Tracking**. This tracking uses parameters returned in the search results (d and s) for session validation.
+           <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
+               <a href="https://docs.searchspring.com/reference/intellisuggest_tracking" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                   Intellisuggest Tracking Docs 🔗
                </a>
-               <a href="https://docs.searchspring.com/reference/purchase-tracking" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                   Purchase Tracking Docs 🔗
+           </div>
+           <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+           <p>If you are implementing personalization features, you must also implement the dedicated **Beacon Tracking** POST request.</p>
+           <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
+               <a href="https://docs.searchspring.com/reference/post-beacon-1" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+                   Beacon Tracking (Personalization) Docs 🔗
                </a>
            </div>`,
-                    code: `<span class="com">// 1. Search Response (Capture data):</span>
-{
-   "results": [
-     {
-       "id": "SKU-123",
-       "intelliSuggestData": "eJxyz...", <span class="com">// Capture 'd'</span>
-       "intelliSuggestSignature": "58a2b..." <span class="com">// Capture 's'</span>
-     }
-   ]
-}
-
-<span class="com">// 2. Tracking Request (Outgoing Beacon):</span>
-https://{siteId}.a.Athos.io/api/track/track.json
-?siteId=<span class="str">abc1234</span>
-&d=<span class="str">eJxyz...</span> <span class="com">// REQUIRED</span>
-&s=<span class="str">58a2b...</span> <span class="com">// REQUIRED</span>`
-                },
-                docsUrl: BASE_DOCS_URL
-            },
+        code: `` // Code block intentionally left empty
+    },
+    docsUrl: BASE_DOCS_URL
+},
             filtering: {
                 title: "Faceting & Advanced Filtering ",
                 klevu: {
