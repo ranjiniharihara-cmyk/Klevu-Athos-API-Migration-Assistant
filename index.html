@@ -165,13 +165,12 @@
             margin-top: 0;
         }
 
-        /* UPDATED: Remove background and excessive padding, but keep the border */
+        /* FIX: Adjusted padding for better flow inside the border line */
         .description-box {
             background: none;
-            /* REMOVED BACKGROUND COLOR */
             border-left: 4px solid var(--ss-color);
-            padding: 0 0 0 15px;
-            /* REMOVED PADDING ON TOP/BOTTOM/RIGHT */
+            padding: 1px 0 0 15px;
+            /* Reduced vertical padding */
             margin-bottom: 20px;
             border-radius: 4px;
             font-size: 15px;
@@ -180,8 +179,12 @@
 
         .klevu-theme .description-box {
             background: none;
-            /* REMOVED BACKGROUND COLOR */
             border-left: 4px solid var(--klevu-color);
+        }
+
+        /* Style for top-level paragraph inside description-box */
+        .description-box>p:first-child {
+            margin-top: 15px;
         }
 
         .code-header {
@@ -338,6 +341,7 @@
                 <div class="nav-item" onclick="setSection('search')">Search API</div>
                 <div class="nav-item" onclick="setSection('category')">Category Pages</div>
                 <div class="nav-item" onclick="setSection('recs')">Recommendations</div>
+                <div class="nav-item" onclick="setSection('personalization')">Personalization</div>
                 <div class="nav-item" onclick="setSection('analytics')">Analytics - not ready</div>
                 <div class="nav-item" onclick="setSection('filtering')">Filtering / Advanced Faceting</div>
                 <div class="nav-item" onclick="setSection('configs')">Configurations</div>
@@ -357,7 +361,7 @@
             autocomplete: {
                 title: "Autocomplete & Instant Search",
                 klevu: {
-                    desc: "Klevu handles both the Zero-Term and Typed states using a single endpoint structure. All content (Trending, Products, CMS) is returned in nested arrays within a monolithic response.",
+                    desc: "<p>Klevu handles both the Zero-Term and Typed states using a single endpoint structure. All content (Trending, Products, CMS) is returned in nested arrays within a monolithic response.</p>",
                     code: `
                     <div class="sub-section">
                         <h3>Zero-Term: Trending Queries/Products</h3>
@@ -392,7 +396,7 @@ POST /cs/v2/search
                 `
                 },
                 ss: {
-                    desc: "Athos requires Parallel Requests and uses specialized endpoints. Categories and CMS pages are typically indexed in a separate 'Content' Site ID for performance and modularity.",
+                    desc: "<p>Athos requires Parallel Requests and uses specialized endpoints. Categories and CMS pages are typically indexed in a separate 'Content' Site ID for performance and modularity.</p>",
                     code: `
                     <div class="sub-section">
                         <h3><span class="heading-content">Zero-Term: Trending Searches (Queries)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-trending"></span></h3>
@@ -446,7 +450,8 @@ GET /api/search/suggest.json
             search: {
                 title: "Product Search & Pagination",
                 klevu: {
-                    desc: "Klevu uses a <b>POST</b> request with a deep JSON structure. Pagination is handled via <code>offset</code> (0, 10, 20...). Filters are nested objects.",
+                    // FIX: Wrapped desc in <p> tag to improve layout and fix margin issue
+                    desc: "<p>Klevu uses a <b>POST</b> request with a deep JSON structure. Pagination is handled via <code>offset</code> (0, 10, 20...). Filters are nested objects.</p>",
                     code: `<span class="com">// Klevu Endpoint: POST /cs/v2/search</span>
 {
   <span class="key">"context"</span>: {
@@ -466,7 +471,8 @@ GET /api/search/suggest.json
 }`
                 },
                 ss: {
-                    desc: `Athos uses a standard <b>GET</b> request. Pagination uses <code>page</code> numbers (1, 2, 3...). Filters are flattened into query parameters using the <code>filter.field</code> syntax.
+                    // FIX: Wrapped desc in <p> tag to improve layout and fix margin issue
+                    desc: `<p>Athos uses a standard <b>GET</b> request. Pagination uses <code>page</code> numbers (1, 2, 3...). Filters are flattened into query parameters using the <code>filter.field</code> syntax.</p>
 					<div style="margin-top: 10px; text-align: right;">
 						<a href="https://docs.searchspring.com/reference/get-search" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
 							Search API Documentation 🔗
@@ -489,7 +495,8 @@ GET /api/search/suggest.json
             category: {
                 title: "Category/Collection Pages",
                 klevu: {
-                    desc: "Klevu treats categories like search results where the query is <code>*</code> and a <code>categoryPath</code> filter is applied within the JSON payload.",
+                    // FIX: Wrapped desc in <p> tag to improve layout and fix margin issue
+                    desc: "<p>Klevu treats categories like search results where the query is <code>*</code> and a <code>categoryPath</code> filter is applied within the JSON payload.</p>",
                     code: `<span class="com">// Klevu: POST /cs/v2/search</span>
 {
   <span class="key">"recordQueries"</span>: [
@@ -506,7 +513,8 @@ GET /api/search/suggest.json
 }`
                 },
                 ss: {
-                    desc: `In Athos, leave the query <code>q=</code> empty, and apply a <b>Background Filter</b>. This loads the merchandising config for that specific category.
+                    // FIX: Wrapped desc in <p> tag to improve layout and fix margin issue
+                    desc: `<p>In Athos, leave the query <code>q=</code> empty, and apply a <b>Background Filter</b>. This loads the merchandising config for that specific category.</p>
 					<div style="margin-top: 10px; text-align: right;">
 						<a href="https://docs.searchspring.com/reference/category-result-pages" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
 							Category Pages API Documentation 🔗
@@ -584,18 +592,44 @@ GET /api/search/suggest.json
                 },
                 docsUrl: BASE_DOCS_URL
             },
-analytics: {
-    title: "Analytics & IntelliSuggest Tracking",
-    klevu: {
-        desc: "Klevu tracks search and click events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>. Along with this, it also collects purchase data through an API endpoint.",
-        code: `<span class="com">// Klevu Click Tracking URL</span>
+
+            // --- NEW PERSONALIZATION TAB ---
+            personalization: {
+                title: "User Personalization & Context",
+                klevu: {
+                    desc: `<p>With Klevu, the user preferences and browsing history were to be passed in the API request.</p>
+                    <div style="margin-top: 10px; text-align: right;">
+						<a href="https://docs.klevu.com/apis/personalisation#Xx4Es" target="_blank" style="color: var(--klevu-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+							Klevu Personalization Docs 🔗
+						</a>
+					</div>`,
+                    code: `` // No code block needed
+                },
+                ss: {
+                    desc: `<p>With Athos, personalization is achieved across sessions and is strongly tied to the shopper ID. It is critical to pass the customer details in the recommendation request to display personalized results.</p>
+                    <p>It is also important to make a <b>preflight API call</b> with shopper and user ID details before running searches to initialize and enable all personalization features for the current session.</p>
+                    <div style="margin-top: 10px; text-align: right;">
+						<a href="https://docs.searchspring.com/reference/post-preflight" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+							Athos Preflight API Docs 🔗
+						</a>
+					</div>`,
+                    code: `` // No code block needed
+                },
+                docsUrl: 'https://docs.searchspring.com/reference/post-preflight'
+            },
+
+            analytics: {
+                title: "Analytics & IntelliSuggest Tracking",
+                klevu: {
+                    desc: "<p>Klevu tracks search and click events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>. Along with this, it also collects purchase data through an API endpoint.</p>",
+                    code: `<span class="com">// Klevu Click Tracking URL</span>
 https://stats.ksearchnet.com/analytics/collect
 ?klevu_apiKey=<span class="str">klevu-123</span>
 &klevu_type=<span class="str">clicked</span>
 &klevu_productId=<span class="str">SKU-123</span>`
-    },
-    ss: {
-        desc: `For product-related actions (Search, Click, View), Athos requires <b>Intellisuggest Tracking</b>. This tracking uses parameters returned in the search results (d and s) for session validation.
+                },
+                ss: {
+                    desc: `<p>For product-related actions (Search, Click, View), Athos requires <b>Intellisuggest Tracking</b>. This tracking uses parameters returned in the search results (d and s) for session validation.</p>
            <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
                <a href="https://docs.searchspring.com/reference/intellisuggest_tracking" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
                    Intellisuggest Tracking Docs 🔗
@@ -608,15 +642,15 @@ https://stats.ksearchnet.com/analytics/collect
                    Beacon Tracking (Personalization) Docs 🔗
                </a>
            </div>`,
-        code: `` // Code block intentionally left empty
-    },
-    docsUrl: BASE_DOCS_URL
-},
+                    code: `` // Code block intentionally left empty
+                },
+                docsUrl: BASE_DOCS_URL
+            },
             filtering: {
                 title: "Faceting & Advanced Filtering ",
                 klevu: {
-                    // FIX: Consolidated Klevu filtering content into the desc string and corrected structure
-                    desc: `Klevu requires the front-end developer to use specific API parameters or structured conditions to control the display and complex behavior of filters (facets) in search and category results.
+                    // FIX: Wrapped initial descriptive text in <p> tag
+                    desc: `<p>Klevu requires the front-end developer to use specific API parameters or structured conditions to control the display and complex behavior of filters (facets) in search and category results.</p>
                 <div class="sub-section" style="margin-top: 15px;">
                     <h3>Facet Visibility, Ordering & Limits</h3>
                     <p>Controlling which filters are displayed (visibility), the order in which they appear (ordering), and the number of values shown (limits) is managed by defining them in the APIs.</p>
@@ -664,7 +698,7 @@ POST /cs/v2/search
                     code: `` // Code block intentionally left empty for external rendering via 'desc'
                 },
                 ss: {
-                    desc: `Athos provides more flexibility to the merchandiser so they can define filter behavior, order, and advanced rules. The functionality is entirely controlled via the Merchandising Console.
+                    desc: `<p>Athos provides more flexibility to the merchandiser so they can define filter behavior, order, and advanced rules. The functionality is entirely controlled via the Merchandising Console.</p>
 					<hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
 					<p>Filter rules are added in the Visual Merchandising Console campaign rules.
 					<ul>
@@ -687,35 +721,35 @@ POST /cs/v2/search
             configs: {
                 title: "Core Search & Merchandising Configurations",
                 klevu: {
-                    desc: `Klevu exposes numerous search and category merchandising settings, preferences, and fine-tuning options through its APIs. These configurations are typically managed by the developer directly via the payload structure.
-                   <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-                   <p style="font-weight: 600; margin-bottom: 5px;">Key Klevu API Configurations:</p>
-                   <ul>
-                       <li><b>Sorting:</b> Defining sorting option in the API.</li>
-                       <li><b>Pagination:</b> Specify Page size and results per page in API.</li>
-                       <li><b>Fields:</b> Managed by explicitly listing required product fields in the payload.</li>
-                       <li><b>Grouping Results:</b> Used to group variants through Name </li>
-                       <li><b>Type of Search:</b> Specify the search type like wildcard match or Fuzzy match.</li>
-                       <li><b>Search preferences:</b> Settings to fine tune queries.</li>
-                   </ul>`,
+                    desc: `<p>Klevu exposes numerous search and category merchandising settings, preferences, and fine-tuning options through its APIs. These configurations are typically managed by the developer directly via the payload structure.
+                   <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+                   <p style="font-weight: 600; margin-bottom: 5px;">Key Klevu API Configurations:</p>
+                   <ul>
+                       <li><b>Sorting:</b> Defining sorting option in the API.</li>
+                       <li><b>Pagination:</b> Specify Page size and results per page in API.</li>
+                       <li><b>Fields:</b> Managed by explicitly listing required product fields in the payload.</li>
+                       <li><b>Grouping Results:</b> Used to group variants through Name </li>
+                       <li><b>Type of Search:</b> Specify the search type like wildcard match or Fuzzy match.</li>
+                       <li><b>Search preferences:</b> Settings to fine tune queries.</li>
+                   </ul></p>`,
                     code: `` // No code block needed
                 },
                 ss: {
-                    desc: `Athos generally moves these configurations from the code layer to the Merchandising Console or utilizes simple query parameters, giving more control to the merchandiser.
-                   <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-                   <p style="font-weight: 600; margin-bottom: 5px;">Athos Configuration Mapping:</p>
-                   <ul>
-                       <li><b>Sorting:</b> Any eligible Indexed attribute can be used as a sorting option, configurable in the admin. This provides more control to the merchandiser.
-                           <div style="margin-top: 5px; font-size: 0.9em;"><a href="https://help.searchspring.net/hc/en-us/articles/206986683-Sort-Options" target="_blank" style="color: var(--ss-color); text-decoration: none;">Sort Options Docs 🔗</a></div>
-                       </li>
-                       <li><b>Pagination:</b> Pagination is defined through the <code>resultsPerPage</code> and <code>page</code> query parameters in the search API call.</li>
-                       <li><b>Fields:</b> Fields to be returned in the response (display) and fields to be used for search/filters (searchable/filterable) are configured in the Field Settings section.
-                           <div style="margin-top: 5px; font-size: 0.9em;"><a href="https://help.searchspring.net/hc/en-us/articles/203776879-4-Managing-Field-Settings" target="_blank" style="color: var(--ss-color); text-decoration: none;">Field Settings Docs 🔗</a></div>
-                       </li>
-                       <li><b>Grouping Results:</b> Grouping results is not currently available in Athos.</li>
-                       <li><b>Type of Search:</b> Athos has concepts like Strict Search and Expanded Search, which manage query interpretation.</li>
-                       <li><b>Search preferences:</b> There are no exact configurations in Athos, but handling out-of-stock visibility or deboosting them can be handled through Merchandising Rules. For any other search-specific configurations, please reach out to your PM at the time of implementation.</li>
-                   </ul>`,
+                    desc: `<p>Athos generally moves these configurations from the code layer to the Merchandising Console or utilizes simple query parameters, giving more control to the merchandiser.
+                   <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+                   <p style="font-weight: 600; margin-bottom: 5px;">Athos Configuration Mapping:</p>
+                   <ul>
+                       <li><b>Sorting:</b> Any eligible Indexed attribute can be used as a sorting option, configurable in the admin. This provides more control to the merchandiser.
+                           <div style="margin-top: 5px; font-size: 0.9em;"><a href="https://help.searchspring.net/hc/en-us/articles/206986683-Sort-Options" target="_blank" style="color: var(--ss-color); text-decoration: none;">Sort Options Docs 🔗</a></div>
+                       </li>
+                       <li><b>Pagination:</b> Pagination is defined through the <code>resultsPerPage</code> and <code>page</code> query parameters in the search API call.</li>
+                       <li><b>Fields:</b> Fields to be returned in the response (display) and fields to be used for search/filters (searchable/filterable) are configured in the Field Settings section.
+                           <div style="margin-top: 5px; font-size: 0.9em;"><a href="https://help.searchspring.net/hc/en-us/articles/203776879-4-Managing-Field-Settings" target="_blank" style="color: var(--ss-color); text-decoration: none;">Field Settings Docs 🔗</a></div>
+                       </li>
+                       <li><b>Grouping Results:</b> Grouping results is not currently available in Athos.</li>
+                       <li><b>Type of Search:</b> Athos has concepts like Strict Search and Expanded Search, which manage query interpretation.</li>
+                       <li><b>Search preferences:</b> There are no exact configurations in Athos, but handling out-of-stock visibility or deboosting them can be handled through Merchandising Rules. For any other search-specific configurations, please reach out to your PM at the time of implementation.</li>
+                   </ul></p>`,
                     code: `` // No code block needed
                 },
                 docsUrl: BASE_DOCS_URL
