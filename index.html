@@ -485,8 +485,18 @@ GET /api/search/suggest.json
 						<a href="https://docs.searchspring.com/reference/get-search" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
 							Search API Documentation 🔗
 						</a>
-					</div>`,
-                    code: `<span class="com">// Athos Endpoint: GET /api/search/search.json</span>
+					</div>
+                    <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+           <div class="desc-title">Advanced API Configurations:</div>
+           <ul>
+               <li><b>Included Facets:</b> Use <code>facets.include</code> to request only specific filters in the response.</li>
+               <li><b>Excluded Facets:</b> Use <code>facets.exclude</code> to hide specific filters from the response.</li>
+               <li><b>Disable Visuals:</b> Use <code>merchandising.disable.inlineBanner</code> to suppress automated banners.</li>
+               <li><b>Cart Context:</b> Pass <code>cart</code> with product SKUs to enable cart-aware personalization.</li>
+               <li><b>Analytics IDs:</b> Ensure <code>userId</code> and <code>sessionId</code> are passed for accurate tracking.</li>
+           </ul>`,
+
+                    code: `<span class="com">//Athos Endpoint: </span> GET https://{{siteId}}.a.athoscommerce.io/api/search/search.json</span>
 
 <span class="com">// Query Parameters:</span>
 ?siteId=<span class="str">abc1234</span>
