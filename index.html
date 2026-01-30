@@ -461,7 +461,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
                         <h3><span class="heading-content">Suggested APIs (Query Suggestions)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-suggest"></span></h3>
                         <p>Dedicated Suggestions API for fetching relevant related terms based on partial user input. More details on how Athos creates suggestions <span class="link-placeholder" data-link="https://help.searchspring.net/hc/en-us/articles/360050241231-How-Autocomplete-suggestions-are-created"></span> </p>
                         <pre><code><span class="com">// Req C: QUERY SUGGESTIONS (Main Site ID)</span>
-GET /api/search/suggest.json
+GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
 ?siteId=<span class="str">{Main_Site_ID}</span>
 &q=<span class="str">boots</span></code></pre>
                     </div>
