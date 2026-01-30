@@ -20,7 +20,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            margin: 0;
+            margin: 0;freco
             padding: 40px;
             display: flex;
             justify-content: center;
@@ -579,7 +579,7 @@ GET /api/search/suggest.json
 					<p style="font-weight: 600; margin-bottom: 5px;">Note on Payload Structure:</p>
 					<p>The <b>Profiles</b> object consists of multiple configurations to specify limit, categories, etc. One is <b>deduping</b>, which prevents the same product from appearing in multiple recommendation profiles within a single batch. This is useful when you have several recommendation profiles on a page and want to ensure a diverse range of products is shown to the shopper.</p>
 					<p>The <b>Filters</b> object is used to define filtering configurations (e.g., excluding the current product SKU).</p>`,
-                    code: `<span class="com">// Athos Endpoint: POST /boost/recommendations/recommend</span>
+                    code: `<span class="com">// Athos Endpoint: POST https://{{siteId}}.a.p13n.athoscommerce.io/v1/recommend</span>
 
 {
   <span class="key">"profiles"</span>: [
