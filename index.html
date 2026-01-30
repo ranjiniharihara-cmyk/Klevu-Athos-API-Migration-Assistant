@@ -445,7 +445,7 @@ POST https://{{siteId}}.a.p13n.athoscommerce.io/v1/recommend
                         <h3><span class="heading-content">Typed Search: Products (Main Index)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-autocomplete"></span></h3>
                         <p>Dedicated Autocomplete endpoint for fast product and term suggestions.</p>
                         <pre><code><span class="com">// Req A: PRODUCTS (Main Site ID)</span>
-GET /api/search/autocomplete.json
+GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
 ?siteId=<span class="str">{Main_Site_ID}</span>
 &q=<span class="str">boots</span></code></pre>
                     </div>
@@ -453,7 +453,7 @@ GET /api/search/autocomplete.json
                         <h3><span class="heading-content">Typed Search: Categories & CMS (Content Index)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/content-results"></span></h3>
                         <p>Parallel request to the Content Site ID to fetch non-product results for a tabbed view.</p>
                         <pre><code><span class="com">// Req B: CATEGORIES & CMS (Content Site ID)</span>
-GET /api/search/autocomplete.json
+GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
 ?siteId=<span class="str">{Content_Site_ID}</span>
 &q=<span class="str">boots</span></code></pre>
                     </div>
