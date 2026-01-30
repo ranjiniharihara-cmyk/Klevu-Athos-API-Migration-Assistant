@@ -409,9 +409,16 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/trending.json
                         <h3><span class="heading-content">Zero-Term: Trending Products</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-recommendations"></span></h3>
                         <p>This is a Recommendation API call using a configured Profile Tag. Create a Trending profile in Athos admin and use the tag <span class="link-placeholder" data-link="https://help.searchspring.net/hc/en-us/articles/360055535452-Creating-a-New-Profile"></span></p>
                         <pre><code><span class="com">// Athos Recommendations API:</span>
-GET /boost/recommendations/recommend
-?siteId=<span class="str">{Main_Site_ID}</span>
-&tags=<span class="str">autocomplete-trending</span></code></pre>
+POST https://{{siteId}}.a.p13n.athoscommerce.io/v1/recommend
+{
+  <span class="key">"profiles"</span>: [
+    {
+      <span class="key">"tag"</span>: <span class="str">"Trending"</span>,
+      <span class="key">"limit"</span>: <span class="num">10</span>
+    },
+  ],
+  <span class="key">"siteId"</span>: "{{siteId}}",
+}</code></pre>
                     </div>
                     <div class="sub-section">
                         <h3><span class="heading-content">Zero-Term: Recent Searches</span></h3>
@@ -423,9 +430,16 @@ localStorage.setItem('athos_recent_searches', JSON.stringify(terms))</code></pre
                         <h3><span class="heading-content">Zero-Term: Recently viewed</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-recommendations"></span></h3>
                         <p>This is a Recommendation API call using a configured Profile Tag. Create a Recently viewed profile in Athos admin and use the tag <span class="link-placeholder" data-link="https://help.searchspring.net/hc/en-us/articles/360055535452-Creating-a-New-Profile"></span></p>
                         <pre><code><span class="com">// Athos Recommendations API:</span>
-GET /boost/recommendations/recommend
-?siteId=<span class="str">{Main_Site_ID}</span>
-&tags=<span class="str">autocomplete-recentlyViewed</span></code></pre>
+POST https://{{siteId}}.a.p13n.athoscommerce.io/v1/recommend
+{
+  <span class="key">"profiles"</span>: [
+    {
+      <span class="key">"tag"</span>: <span class="str">"Recently Viewed"</span>,
+      <span class="key">"limit"</span>: <span class="num">10</span>
+    },
+  ],
+  <span class="key">"siteId"</span>: "{{siteId}}",
+}</code></pre>
                     </div>
                     <div class="sub-section">
                         <h3><span class="heading-content">Typed Search: Products (Main Index)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-autocomplete"></span></h3>
