@@ -650,34 +650,44 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
                 docsUrl: 'https://docs.searchspring.com/reference/post-preflight'
             },
 
-            analytics: {
-                title: "Analytics & IntelliSuggest Tracking",
-                klevu: {
-                    desc: "<p>Klevu tracks search and click events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>. Along with this, it also collects purchase data through an API endpoint.</p>",
-                    code: `<span class="com">// Klevu Click Tracking URL</span>
+analytics: {
+    title: "Analytics Tracking",
+    klevu: {
+        desc: "<p>Klevu tracks search and click events via simple GET requests (tracking pixels) to <code>stats.ksearchnet.com</code>. Along with this, it also collects purchase data through an API endpoint.</p>",
+        code: `<span class="com">// Klevu Click Tracking URL</span>
 https://stats.ksearchnet.com/analytics/collect
 ?klevu_apiKey=<span class="str">klevu-123</span>
 &klevu_type=<span class="str">clicked</span>
 &klevu_productId=<span class="str">SKU-123</span>`
-                },
-                ss: {
-                    desc: `<p>For product-related actions (Search, Click, View), Athos requires <b>Intellisuggest Tracking</b>. This tracking uses parameters returned in the search results (d and s) for session validation.</p>
-           <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
-               <a href="https://docs.searchspring.com/reference/intellisuggest_tracking" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                   Intellisuggest Tracking Docs 🔗
-               </a>
-           </div>
-           <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-           <p>If you are implementing personalization features, you must also implement the dedicated <b>Beacon Tracking</b> POST request.</p>
-           <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;"> 
-               <a href="https://docs.searchspring.com/reference/post-beacon-1" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
-                   Beacon Tracking (Personalization) Docs 🔗
-               </a>
-           </div>`,
-                    code: `` // Code block intentionally left empty
-                },
-                docsUrl: BASE_DOCS_URL
-            },
+    },
+    ss: {
+        desc: `<p>Athos uses a comprehensive <b>Beacon Tracking</b> system to capture user behavior. This requires implementing specific event triggers across the shopper journey.</p>
+        <div style="margin-top: 10px; text-align: right;">
+            <a href="https://docs.searchspring.com/reference/beacon-tracking" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">Overall Beacon Tracking Docs 🔗</a>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+        <div class="desc-title">Implementation Guides:</div>
+        <ul>
+            <li><b>Autocomplete:</b> Tracks interactions within the suggestion dropdown. 
+                <div style="margin-bottom: 8px;"><a href="https://docs.searchspring.com/reference/autocomplete-tracking-guide" target="_blank" style="color: var(--ss-color); text-decoration: none; font-size: 0.85em;">View Guide 🔗</a></div>
+            </li>
+            <li><b>Search Results:</b> Captures search page tracking.
+                <div style="margin-bottom: 8px;"><a href="https://docs.searchspring.com/reference/search-tracking-guide" target="_blank" style="color: var(--ss-color); text-decoration: none; font-size: 0.85em;">View Guide 🔗</a></div>
+            </li>
+            <li><b>Category Pages:</b> Tracks browsing behavior on landing pages.
+                <div style="margin-bottom: 8px;"><a href="https://docs.searchspring.com/reference/category-tracking-guide" target="_blank" style="color: var(--ss-color); text-decoration: none; font-size: 0.85em;">View Guide 🔗</a></div>
+            </li>
+            <li><b>Recommendations:</b> Attributes revenue and clicks to specific rec profiles.
+                <div style="margin-bottom: 8px;"><a href="https://docs.searchspring.com/reference/recommendations-tracking-guide" target="_blank" style="color: var(--ss-color); text-decoration: none; font-size: 0.85em;">View Guide 🔗</a></div>
+            </li>
+            <li><b>Platform Events:</b> Specialized tracking for cart actions and platform-specific data.
+                <div><a href="https://docs.searchspring.com/reference/shopping-platform-tracking-guide" target="_blank" style="color: var(--ss-color); text-decoration: none; font-size: 0.85em;">View Guide 🔗</a></div>
+            </li>
+        </ul>`,
+        code: `` // No code block needed for this overview
+    },
+    docsUrl: 'https://docs.searchspring.com/reference/beacon-tracking'
+},
             filtering: {
                 title: "Faceting & Advanced Filtering ",
                 klevu: {
@@ -800,86 +810,53 @@ POST /cs/v2/search
 
         // --- UPDATED RENDER FUNCTION ---
         function render() {
-            const sectionData = data[currentSection];
-            const platformData = isAthos ? sectionData.ss : sectionData.klevu;
-            const platformName = isAthos ? 'Athos' : 'Klevu';
-            const badgeClass = isAthos ? 'ss' : 'klevu';
+    const sectionData = data[currentSection];
+    const platformData = isAthos ? sectionData.ss : sectionData.klevu;
+    const platformName = isAthos ? 'Athos' : 'Klevu';
+    const badgeClass = isAthos ? 'ss' : 'klevu';
 
-            // **1. Section Link (Appears once at bottom)**
-            let docsLinkHTML = '';
+    // Update Labels and Theme
+    labelSS.classList.toggle('active', isAthos);
+    labelKlevu.classList.toggle('active', !isAthos);
+    contentArea.classList.toggle('klevu-theme', !isAthos);
 
-            // The main link uses the BASE_DOCS_URL defined globally
-            if (isAthos) {
-                docsLinkHTML = `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
-                                <a href="${BASE_DOCS_URL}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">
-                                    🚀 View Official Athos Docs
-                                </a>
-                            </div>`;
-            }
+    let docsLinkHTML = isAthos ? `<div style="margin-top: 15px; font-size: 14px; text-align: right;">
+        <a href="${sectionData.docsUrl || BASE_DOCS_URL}" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600;">🚀 View Official Athos Docs</a>
+    </div>` : '';
 
-            // **2. Sub-Block Link Insertion Logic (Only for Autocomplete)**
-            let finalCode = platformData.code;
+    let finalCode = platformData.code || '';
+    if (isAthos) {
+        const linkRegex = /<span class="link-placeholder" data-link="([^"]+)">/g;
+        finalCode = finalCode.replace(linkRegex, (match, url) => {
+            return `<a href="${url}" target="_blank" style="color: var(--ss-color); font-size: 0.9em; text-decoration: none; margin-left: 10px; flex-shrink: 0;">🔗</a>`;
+        });
+    }
 
-            // Only modify Autocomplete code blocks with the link icon (Autosuggestion logic is handled here)
-            if (isAthos) {
-                // Regex to find the unique placeholder: <span class="link-placeholder" data-link="URL"></span>
-                const linkRegex = /<span class="link-placeholder" data-link="([^"]+)">/g;
-
-                finalCode = finalCode.replace(linkRegex, (match, url) => {
-                    if (url) {
-                        // The link icon replaces the placeholder span
-                        return `<a href="${url}" target="_blank" style="color: var(--ss-color); font-size: 0.9em; text-decoration: none; margin-left: 10px; flex-shrink: 0;">🔗</a>`;
-                    }
-                    return ''; // Remove placeholder if URL is missing
-                });
-            }
-
-
-            // Update Labels
-            labelSS.classList.toggle('active', isAthos);
-            labelKlevu.classList.toggle('active', !isAthos);
-            contentArea.classList.toggle('klevu-theme', !isAthos);
-
-
-            // Generate HTML
-            let contentHTML;
-            if (currentSection === 'autocomplete') {
-                contentHTML = finalCode + docsLinkHTML;
-            } else {
-                // START: Conditional Code Block Rendering Logic
-                let codeBlockHTML = '';
-                // Only render the code block and header if code exists and is not just whitespace
-                if (platformData.code.trim().length > 0) {
-                    // Update the REST API label for the Recs tab where it is POST
-                    const apiMethod = (currentSection === 'recs' && isAthos) ? 'REST API (POST)' : 'REST API (GET)';
-
-                    codeBlockHTML = `
-                        <div class="code-header">
-                            <span>Request Format</span>
-                            <span>${apiMethod}</span>
-                        </div>
-                        <pre><code>${finalCode}</code></pre>
-                    `;
-                }
-                // END: Conditional Code Block Rendering Logic
-
-                // For all other simple sections, use the standard template.
-                contentHTML = `
-                    <div class="description-box">
-                        ${platformData.desc}
-                    </div>
-                    ${codeBlockHTML} 
-                    ${docsLinkHTML}
-                `;
-            }
-
-            contentArea.innerHTML = `
-                <span class="badge ${badgeClass}">${platformName} Implementation</span>
-                <h2>${sectionData.title}</h2>
-                ${contentHTML}
-            `;
+    let mainContent = '';
+    if (currentSection === 'autocomplete') {
+        // AUTOCOMPLETE special layout (No wrapping box for code)
+        mainContent = `<div class="description-box">${platformData.desc}</div>${finalCode}`;
+    } else {
+        // STANDARD layout for Search, Analytics, etc.
+        let codeBlockHTML = '';
+        if (finalCode.trim().length > 0) {
+            const apiMethod = (currentSection === 'recs' && isAthos) ? 'REST API (POST)' : 'REST API (GET)';
+            codeBlockHTML = `<div class="code-header"><span>Request Format</span><span>${apiMethod}</span></div>
+                             <pre><code>${finalCode}</code></pre>`;
         }
+        
+        let afterCodeHTML = platformData.afterCode ? `<div class="description-box" style="margin-top: 20px;">${platformData.afterCode}</div>` : '';
+        
+        mainContent = `<div class="description-box">${platformData.desc}</div>${codeBlockHTML}${afterCodeHTML}`;
+    }
 
+    contentArea.innerHTML = `
+        <span class="badge ${badgeClass}">${platformName} Implementation</span>
+        <h2>${sectionData.title}</h2>
+        ${mainContent}
+        ${docsLinkHTML}
+    `;
+}
         // --- EVENT LISTENERS ---
         toggle.addEventListener('change', (e) => {
             isAthos = e.target.checked;
