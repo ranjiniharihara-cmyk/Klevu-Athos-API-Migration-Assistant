@@ -354,7 +354,7 @@
 
     <script>
         // --- BASE DOCS URL (Used for the main footer link) ---
-        const BASE_DOCS_URL = 'https://docs.searchspring.com/reference/getting-started-welcome';
+        const BASE_DOCS_URL = 'https://docs.athoscommerce.com/reference/getting-started-welcome';
 
         // --- DATA STORE (ALL MAPPINGS) ---
         const data = {
@@ -406,7 +406,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/trending.json
 ?siteId=<span class="str">{Main_Site_ID}</span></code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3><span class="heading-content">Zero-Term: Trending Products</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/post-recommendations"></span></h3>
+                        <h3><span class="heading-content">Zero-Term: Trending Products</span> <span class="link-placeholder" data-link="https://docs.athoscommerce.com/reference/post-recommendations"></span></h3>
                         <p>This is a Recommendation API call using a configured Profile Tag. Create a Trending profile in Athos admin and use the tag <span class="link-placeholder" data-link="https://help.searchspring.net/hc/en-us/articles/360055535452-Creating-a-New-Profile"></span></p>
                         <pre><code><span class="com">// Athos Recommendations API:</span>
 POST https://{{siteId}}.a.p13n.athoscommerce.io/v1/recommend
@@ -427,7 +427,7 @@ POST https://{{siteId}}.a.p13n.athoscommerce.io/v1/recommend
 localStorage.setItem('athos_recent_searches', JSON.stringify(terms))</code></pre>
                     </div>
 					<div class="sub-section">
-                        <h3><span class="heading-content">Zero-Term: Recently viewed</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/post-recommendations"></span></h3>
+                        <h3><span class="heading-content">Zero-Term: Recently viewed</span> <span class="link-placeholder" data-link="https://docs.athoscommerce.com/reference/post-recommendations"></span></h3>
                         <p>This is a Recommendation API call using a configured Profile Tag. Create a Recently viewed profile in Athos admin and use the tag <span class="link-placeholder" data-link="https://help.searchspring.net/hc/en-us/articles/360055535452-Creating-a-New-Profile"></span></p>
                         <pre><code><span class="com">// Athos Recommendations API:</span>
 POST https://{{siteId}}.a.p13n.athoscommerce.io/v1/recommend
@@ -442,7 +442,7 @@ POST https://{{siteId}}.a.p13n.athoscommerce.io/v1/recommend
 }</code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3><span class="heading-content">Typed Search: Products (Main Index)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-autocomplete"></span></h3>
+                        <h3><span class="heading-content">Typed Search: Products (Main Index)</span> <span class="link-placeholder" data-link="https://docs.athoscommerce.com/reference/get-autocomplete"></span></h3>
                         <p>Dedicated Autocomplete endpoint for fast product and term suggestions.</p>
                         <pre><code><span class="com">// Req A: PRODUCTS (Main Site ID)</span>
 GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
@@ -450,7 +450,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
 &q=<span class="str">boots</span></code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3><span class="heading-content">Typed Search: Categories & CMS (Content Index)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/content-results"></span></h3>
+                        <h3><span class="heading-content">Typed Search: Categories & CMS (Content Index)</span> <span class="link-placeholder" data-link="https://docs.athoscommerce.com/reference/content-results"></span></h3>
                         <p>Parallel request to the Content Site ID to fetch non-product results for a tabbed view.</p>
                         <pre><code><span class="com">// Req B: CATEGORIES & CMS (Content Site ID)</span>
 GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
@@ -458,7 +458,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
 &q=<span class="str">boots</span></code></pre>
                     </div>
                     <div class="sub-section">
-                        <h3><span class="heading-content">Suggested APIs (Query Suggestions)</span> <span class="link-placeholder" data-link="https://docs.searchspring.com/reference/get-suggest"></span></h3>
+                        <h3><span class="heading-content">Suggested APIs (Query Suggestions)</span> <span class="link-placeholder" data-link="https://docs.athoscommerce.com/reference/get-suggest"></span></h3>
                         <p>Dedicated Suggestions API for fetching relevant related terms based on partial user input. More details on how Athos creates suggestions <span class="link-placeholder" data-link="https://help.searchspring.net/hc/en-us/articles/360050241231-How-Autocomplete-suggestions-are-created"></span> </p>
                         <pre><code><span class="com">// Req C: QUERY SUGGESTIONS (Main Site ID)</span>
 GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
@@ -496,7 +496,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
                     // FIX: Wrapped desc in <p> tag to improve layout and fix margin issue
                     desc: `<p>Athos uses a standard <b>GET</b> request. Pagination uses <code>page</code> numbers (1, 2, 3...). Filters are flattened into query parameters using the <code>filter.field</code> syntax.</p>
 					<div style="margin-top: 10px; text-align: right;">
-						<a href="https://docs.searchspring.com/reference/get-search" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+						<a href="https://docs.athoscommerce.com/reference/get-suggest" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
 							Search API Documentation 🔗
 						</a>
 					</div>
@@ -548,7 +548,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
                     // FIX: Wrapped desc in <p> tag to improve layout and fix margin issue
                     desc: `<p>In Athos, leave the query <code>q=</code> empty, and apply a <b>Background Filter</b>. This loads the merchandising config for that specific category.</p>
 					<div style="margin-top: 10px; text-align: right;">
-						<a href="https://docs.searchspring.com/reference/category-result-pages" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+						<a href="https://docs.athoscommerce.com/reference/get-category" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
 							Category Pages API Documentation 🔗
 						</a>
 					</div>`,
@@ -585,7 +585,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
                 ss: {
                     desc: `Athos uses a POST request for Recommendations API and multiple profiles can be requested in a single call. You configure the rules in the Console and reference them in the payload.
 					<div style="margin-top: 10px; text-align: right;">
-						<a href="https://docs.searchspring.com/reference/post-recommendations" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+						<a href="https://docs.athoscommerce.com/reference/post-recommendations" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
 							Recommendations API Documentation 🔗
 						</a>
 					</div>
@@ -641,13 +641,13 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
                     desc: `<p>With Athos, personalization is achieved across sessions and is strongly tied to the shopper ID. It is critical to pass the customer details in the recommendation request to display personalized results.</p>
                     <p>It is also important to make a <b>preflight API call</b> with shopper and user ID details before running searches to initialize and enable all personalization features for the current session.</p>
                     <div style="margin-top: 10px; text-align: right;">
-						<a href="https://docs.searchspring.com/reference/post-preflight" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+						<a href="https://docs.athoscommerce.com/reference/post-preflight" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
 							Athos Preflight API Docs 🔗
 						</a>
 					</div>`,
                     code: `` // No code block needed
                 },
-                docsUrl: 'https://docs.searchspring.com/reference/post-preflight'
+                docsUrl: 'https://docs.athoscommerce.com/reference/post-preflight'
             },
 
 analytics: {
@@ -686,7 +686,7 @@ https://stats.ksearchnet.com/analytics/collect
         </ul>`,
         code: `` // No code block needed for this overview
     },
-    docsUrl: 'https://docs.searchspring.com/reference/beacon-tracking'
+    docsUrl: 'https://docs.athoscommerce.com/reference/beacon-tracking'
 },
             filtering: {
                 title: "Faceting & Advanced Filtering ",
