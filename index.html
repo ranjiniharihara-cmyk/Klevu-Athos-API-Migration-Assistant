@@ -402,7 +402,7 @@ POST /cs/v2/search
                         <h3><span class="heading-content">Zero-Term: Trending Searches (Queries)</span> <span class="link-placeholder" data-link="https://docs.athoscommerce.com/reference/get-trending"></span></h3>
                         <p>Uses a dedicated API for fetching aggregate popular search terms.</p>
                         <pre><code><span class="com">// Athos Trending Queries API:</span>
-GET https://{{siteId}}.a.athoscommerce.io/api/suggest/trending.json
+GET https://{siteId}.a.athoscommerce.io/v1/trending
 ?siteId=<span class="str">{Main_Site_ID}</span></code></pre>
                     </div>
                     <div class="sub-section">
@@ -445,7 +445,7 @@ POST https://{{siteId}}.a.p13n.athoscommerce.io/v1/recommend
                         <h3><span class="heading-content">Typed Search: Products (Main Index)</span> <span class="link-placeholder" data-link="https://docs.athoscommerce.com/reference/get-autocomplete"></span></h3>
                         <p>Dedicated Autocomplete endpoint for fast product and term suggestions.</p>
                         <pre><code><span class="com">// Req A: PRODUCTS (Main Site ID)</span>
-GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
+GET https://{siteId}.a.athoscommerce.io/v1/autocomplete
 ?siteId=<span class="str">{Main_Site_ID}</span>
 &q=<span class="str">boots</span></code></pre>
                     </div>
@@ -453,7 +453,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
                         <h3><span class="heading-content">Typed Search: Categories & CMS (Content Index)</span> <span class="link-placeholder" data-link="https://docs.athoscommerce.com/reference/content-results"></span></h3>
                         <p>Parallel request to the Content Site ID to fetch non-product results for a tabbed view.</p>
                         <pre><code><span class="com">// Req B: CATEGORIES & CMS (Content Site ID)</span>
-GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
+GET https://{siteId}.a.athoscommerce.io/v1/autocomplete
 ?siteId=<span class="str">{Content_Site_ID}</span>
 &q=<span class="str">boots</span></code></pre>
                     </div>
@@ -461,7 +461,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/search/autocomplete.json
                         <h3><span class="heading-content">Suggested APIs (Query Suggestions)</span> <span class="link-placeholder" data-link="https://docs.athoscommerce.com/reference/get-suggest"></span></h3>
                         <p>Dedicated Suggestions API for fetching relevant related terms based on partial user input. More details on how Athos creates suggestions <span class="link-placeholder" data-link="https://help.searchspring.net/hc/en-us/articles/360050241231-How-Autocomplete-suggestions-are-created"></span> </p>
                         <pre><code><span class="com">// Req C: QUERY SUGGESTIONS (Main Site ID)</span>
-GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
+GET https://{siteId}.a.athoscommerce.io/v1/suggest
 ?siteId=<span class="str">{Main_Site_ID}</span>
 &q=<span class="str">boots</span></code></pre>
                     </div>
@@ -496,7 +496,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
                     // FIX: Wrapped desc in <p> tag to improve layout and fix margin issue
                     desc: `<p>Athos uses a standard <b>GET</b> request. Pagination uses <code>page</code> numbers (1, 2, 3...). Filters are flattened into query parameters using the <code>filter.field</code> syntax.</p>
 					<div style="margin-top: 10px; text-align: right;">
-						<a href="https://docs.athoscommerce.com/reference/get-suggest" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
+						<a href="https://docs.athoscommerce.com/reference/get-search-results" target="_blank" style="color: var(--ss-color); text-decoration: none; font-weight: 600; font-size: 0.9em;">
 							Search API Documentation 🔗
 						</a>
 					</div>
@@ -510,7 +510,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
                <li><b>Analytics IDs:</b> Ensure <code>userId</code> and <code>sessionId</code> are passed for accurate tracking.</li>
            </ul>`,
 
-                    code: `<span class="com">//Athos Endpoint: </span> GET https://{{siteId}}.a.athoscommerce.io/api/search/search.json</span>
+                    code: `<span class="com">//Athos Endpoint: </span> GET https://{siteId}.a.athoscommerce.io/v1/search</span>
 
 <span class="com">// Query Parameters:</span>
 ?siteId=<span class="str">abc1234</span>
@@ -552,7 +552,7 @@ GET https://{{siteId}}.a.athoscommerce.io/api/suggest/query
 							Category Pages API Documentation 🔗
 						</a>
 					</div>`,
-                    code: `<span class="com">//Athos Endpoint: </span> GET https://{{siteId}}.a.athoscommerce.io/api/search/search.json</span>
+                    code: `<span class="com">//Athos Endpoint: </span> GET https://{siteId}.a.athoscommerce.io/v1/category</span>
 
 <span class="com">// Query Parameters:</span>
 ?siteId=<span class="str">abc1234</span>
